@@ -331,6 +331,7 @@
             "outbounds": [
                 "direct-out",
                 "auto",
+                "proxy",
                 "HK",
                 "TW",
                 "SG",
