@@ -156,6 +156,7 @@
             "tag": "HK",
             "type": "selector",
             "outbounds": [
+                "direct-out",
                 "{all}"
             ],
             "filter": [
@@ -166,6 +167,7 @@
             "tag": "TW",
             "type": "selector",
             "outbounds": [
+                "direct-out",
                 "{all}"
             ],
             "filter": [
@@ -176,6 +178,7 @@
             "tag": "SG",
             "type": "selector",
             "outbounds": [
+                "direct-out",
                 "{all}"
             ],
             "filter": [
@@ -186,6 +189,7 @@
             "tag": "US",
             "type": "selector",
             "outbounds": [
+                "direct-out",
                 "{all}"
             ],
             "filter": [
@@ -196,6 +200,7 @@
             "tag": "JP",
             "type": "selector",
             "outbounds": [
+                "direct-out",
                 "{all}"
             ],
             "filter": [
@@ -221,6 +226,7 @@
             "tag": "others",
             "type": "selector",
             "outbounds": [
+                "direct-out",
                 "{all}"
             ],
             "filter": [
