@@ -26,6 +26,10 @@
         }
     },
     "dns": {
+        "fakeip": {
+            "enabled": true,
+            "inet4_range": "198.18.0.0/15"
+        },
         "servers": [
             {
                 "tag": "dns_proxy",
@@ -48,21 +52,17 @@
             },
             {
                 "tag": "block",
-                "address": "rcode://refused"
+                "address": "rcode://success"
+            },
+            {
+                "tag": "fakeip",
+                "address": "fakeip"
             }
         ],
         "rules": [
             {
                 "outbound": "any",
                 "server": "dns_resolver"
-            },
-            {
-                "rule_set": [
-                    "reject_non_ip",
-                    "reject_non_ip_no_drop",
-                    "reject_domainset"
-                ],
-                "server": "block"
             },
             {
                 "clash_mode": "direct",
@@ -74,29 +74,44 @@
             },
             {
                 "rule_set": [
-                    "domestic_non_ip",
-                    "apple_cn_non_ip",
-                    "apple_services",
-                    "apple_cdn"
+                    "geosite-bilibili",
+                    "geoip-bilibili",
+                    "crunchyroll_non_ip"
                 ],
-                "server": "dns_direct"
+                "query_type": ["A", "AAAA"],
+                "server": "fakeip"
             },
             {
                 "rule_set": [
                     "geosite-bilibili",
-                    "global_non_ip"
+                    "geoip-bilibili",
+                    "crunchyroll_non_ip"
                 ],
-                "server": "dns_proxy"
+                "query_type": 65,
+                "server": "block"
             },
             {
                 "rule_set": "geosite-cn",
-                "invert": true,
-                "server": "dns_proxy"
+                "server": "dns_direct"
+            },
+            {
+                "type": "logical",
+                "mode": "and",
+                "rules": [
+                    {
+                        "rule_set": "geolocation-!cn",
+                        "invert": true
+                    },
+                    {
+                        "rule_set": "geoip-cn"
+                    }
+                ],
+                "server": "dns_proxy",
+                "client_subnet": "61.141.249.0/24"
             }
         ],
         "strategy": "prefer_ipv4",
-        "final": "dns_proxy",
-        "client_subnet": "114.114.114.114/24"
+        "final": "dns_proxy"
     },
     "inbounds": [
         {
@@ -130,36 +145,87 @@
 			"type": "urltest",
 			"tag": "all-auto",
 			"outbounds": [
+                "direct-out",
+                "{all}"
 			],
 			"url": "http://www.gstatic.com/generate_204",
 			"interval": "5m",
 			"tolerance": 50
 		},
         {
-            "tag": "hk",
+            "tag": "HK",
             "type": "selector",
             "outbounds": [
-                "direct-out"
+                "{all}"
             ],
-            "default": 
+            "filter": [
+                {"action": "include", "keywords": ["🇭🇰|HK|hk|Hongkong"]}
+            ]
         },
         {
-            "tag": "tw",
+            "tag": "TW",
             "type": "selector",
             "outbounds": [
-                "direct-out"
+                "{all}"
             ],
-            "default":
+            "filter": [
+                {"action": "include", "keywords": ["🇹🇼|TW|tw|Taiwan"]}
+            ]
+        },
+        {
+            "tag": "SG",
+            "type": "selector",
+            "outbounds": [
+                "{all}"
+            ],
+            "filter": [
+                {"action": "include", "keywords": ["🇸🇬|SG|sg|Singapore"]}
+            ]
+        },
+        {
+            "tag": "US",
+            "type": "selector",
+            "outbounds": [
+                "{all}"
+            ],
+            "filter": [
+                {"action": "include", "keywords": ["🇺🇸|US|us|United States"]}
+            ]
+        },
+        {
+            "tag": "JP",
+            "type": "selector",
+            "outbounds": [
+                "{all}"
+            ],
+            "filter": [
+                {"action": "include", "keywords": ["🇯🇵|JP|jp|Japan"]}
+            ]
         },
         {
             "tag": "proxy",
             "type": "selector",
             "outbounds": [
-                "hk",
-                "tw",
-                "direct-out"
+                "direct-out",
+                "auto",
+                "HK",
+                "TW",
+                "SG",
+                "US",
+                "JP",
+                "{all}"
             ],
-            "default": "hk"
+            "default": "HK"
+        },
+        {
+            "tag": "others",
+            "type": "selector",
+            "outbounds": [
+                "{all}"
+            ],
+            "filter": [
+                {"action": "exclude", "keywords": ["🇭🇰|HK|hk|Hongkong|🇹🇼|TW|tw|Taiwan|🇸🇬|SG|sg|Singapore|🇺🇸|US|us|United States|🇯🇵|JP|jp|Japan"]}
+            ]
         },
         {
             "tag": "apple",
@@ -167,8 +233,7 @@
             "outbounds": [
                 "proxy",
                 "direct-out",
-                "hk",
-                "tw"
+                "{all}"
             ],
             "default": "direct-out"
         },
@@ -178,8 +243,7 @@
             "outbounds": [
                 "proxy",
                 "direct-out",
-                "hk",
-                "tw"
+                "{all}"
             ],
             "default": "proxy"
         },
@@ -187,10 +251,9 @@
             "tag": "bilibili",
             "type": "selector",
             "outbounds": [
-                "proxy",
                 "direct-out",
-                "hk",
-                "tw"
+                "HK",
+                "TW"
             ],
             "default": "direct-out"
         },
@@ -199,9 +262,7 @@
             "type": "selector",
             "outbounds": [
                 "proxy",
-                "direct-out",
-                "hk",
-                "tw"
+                "direct-out"
             ],
             "default": "proxy"
         },
@@ -210,9 +271,7 @@
             "type": "selector",
             "outbounds": [
                 "proxy",
-                "direct-out",
-                "hk",
-                "tw"
+                "direct-out"
             ],
             "default": "direct-out"
         },
@@ -222,8 +281,11 @@
             "outbounds": [
                 "proxy",
                 "direct-out",
-                "hk",
-                "tw"
+                "HK",
+                "TW",
+                "SG",
+                "US",
+                "JP"
             ],
             "default": "proxy"
         },
@@ -233,19 +295,27 @@
             "outbounds": [
                 "proxy",
                 "direct-out",
-                "hk",
-                "tw"
+                "auto",
+                "HK",
+                "TW",
+                "SG",
+                "US",
+                "JP"
             ],
-            "default": "tw"
+            "default": "TW"
         },
         {
             "tag": "final",
             "type": "selector",
             "outbounds": [
-                "proxy",
                 "direct-out",
-                "hk",
-                "tw"
+                "proxy",
+                "auto",
+                "HK",
+                "TW",
+                "SG",
+                "US",
+                "JP"
             ],
             "default": "proxy"
         },
@@ -254,9 +324,23 @@
             "type": "selector",
             "outbounds": [
                 "direct-out",
+                "auto",
+                "HK",
+                "TW",
+                "SG",
+                "US",
+                "JP",
+                "{all}"
+            ],
+            "default": "proxy"
+        },
+        {
+            "tag": "crunchyroll",
+            "type": "selector",
+            "outbounds": [
                 "proxy",
-                "hk",
-                "tw"
+                "direct-out",
+                "US"
             ],
             "default": "proxy"
         }
@@ -275,6 +359,10 @@
                     }
                 ],
                 "outbound": "dns-out"
+            },
+            {
+                "protocol": "quic",
+                "outbound": "block"
             },
             {
                 "clash_mode": "direct",
@@ -300,12 +388,6 @@
             },
             {
                 "rule_set": [
-                    "my_direct"
-                ],
-                "outbound": "direct-out"
-            },
-            {
-                "rule_set": [
                     "cdn_domainset",
                     "cdn_non_ip"
                 ],
@@ -317,6 +399,12 @@
                 ],
                 "outbound": "bilibili"
                 
+            },
+            {
+                "rule_set": [
+                    "crunchyroll_non_ip"
+                ],
+                "outbound": "crunchyroll"
             },
             {
                 "rule_set": [
@@ -672,6 +760,13 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/cn.srs",
+                "download_detour": "proxy"
+            },
+            {
+                "tag": "crunchyroll_non_ip",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/refs/heads/main/supplementary_rules/crunchyroll.srs",
                 "download_detour": "proxy"
             }
         ],
