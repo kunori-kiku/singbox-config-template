@@ -26,15 +26,10 @@
         }
     },
     "dns": {
-        "fakeip": {
-            "enabled": true,
-            "inet4_range": "198.18.0.0/15"
-        },
         "servers": [
             {
                 "tag": "dns_proxy",
                 "address": "https://1.1.1.1/dns-query",
-                "address_resolver": "dns_resolver",
                 "strategy": "ipv4_only",
                 "detour": "proxy"
             },
@@ -55,8 +50,9 @@
                 "address": "rcode://success"
             },
             {
-                "tag": "fakeip",
-                "address": "fakeip"
+                "tag": "dns_bilibili",
+                "address": "8.8.8.8",
+                "detour": "bilibili"
             }
         ],
         "rules": [
@@ -75,20 +71,9 @@
             {
                 "rule_set": [
                     "geosite-bilibili",
-                    "geoip-bilibili",
-                    "crunchyroll_non_ip"
+                    "geoip-bilibili"
                 ],
-                "query_type": ["A", "AAAA"],
-                "server": "fakeip"
-            },
-            {
-                "rule_set": [
-                    "geosite-bilibili",
-                    "geoip-bilibili",
-                    "crunchyroll_non_ip"
-                ],
-                "query_type": 65,
-                "server": "block"
+                "server": "dns_bilibili"
             },
             {
                 "rule_set": "geosite-cn",
