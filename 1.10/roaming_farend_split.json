@@ -48,14 +48,6 @@
                 "server": "dns_proxy"
             },
             {
-                "domain": "raw.githubusercontent.com",
-                "server": "dns_proxy"
-            },
-            {
-                "rule_set": "geosite-category-ads-all",
-                "server": "block"
-            },
-            {
                 "clash_mode": "global",
                 "server": "dns_proxy"
             },
@@ -89,20 +81,22 @@
         },
         {
             "tag": "dns-out",
-            "type": "dns",
-            "detour": "proxy"
+            "type": "dns"
         },
         {
-            "tag": "block-out",
+            "tag": "block",
             "type": "block"
         },
         {
             "tag": "proxy",
             "type": "selector",
-            "outbounds": []
+            "outbounds": [
+                "direct-out",
+                "{all}"
+            ]
         },
         {
-            "tag": "GLOBAL",
+            "tag": "global",
             "type": "selector",
             "outbounds": [
                 "direct-out",
@@ -127,8 +121,12 @@
                 "outbound": "dns-out"
             },
             {
+                "rule_set": "geosite-category-ads-all",
+                "outbound": "block"
+            },
+            {
                 "clash_mode": "global",
-                "outbound": "GLOBAL"
+                "outbound": "global"
             },
             {
                 "clash_mode": "direct",
