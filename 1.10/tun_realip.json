@@ -27,77 +27,65 @@
     },
     "dns": {
         "servers": [
-            {
-                "tag": "dns_proxy",
-                "address": "https://1.1.1.1/dns-query",
-                "strategy": "ipv4_only",
-                "detour": "proxy"
-            },
-            {
-                "tag": "dns_direct",
-                "address": "https://dns.alidns.com/dns-query",
-                "address_resolver": "dns_resolver",
-                "strategy": "ipv4_only",
-                "detour": "direct-out"
-            },
-            {
-                "tag": "dns_resolver",
-                "address": "h3://223.5.5.5/dns-query",
-                "detour": "direct-out"
-            },
-            {
-                "tag": "block",
-                "address": "rcode://success"
-            },
-            {
-                "tag": "dns_bilibili",
-                "address": "8.8.8.8",
-                "detour": "bilibili"
-            }
+          {
+            "tag": "dns_proxy",
+            "address": "https://1.1.1.1/dns-query",
+            "strategy": "ipv4_only",
+            "detour": "proxy"
+          },
+          {
+            "tag": "dns_direct",
+            "address": "https://dns.alidns.com/dns-query",
+            "address_resolver": "dns_resolver",
+            "strategy": "ipv4_only",
+            "detour": "direct-out"
+          },
+          {
+            "tag": "dns_resolver",
+            "address": "h3://223.5.5.5/dns-query",
+            "detour": "direct-out"
+          },
+          {
+            "tag": "block",
+            "address": "rcode://success"
+          }
         ],
         "rules": [
-            {
-                "outbound": "any",
-                "server": "dns_resolver"
-            },
-            {
-                "clash_mode": "direct",
-                "server": "dns_direct"
-            },
-            {
-                "clash_mode": "global",
-                "server": "dns_proxy"
-            },
-            {
-                "rule_set": [
-                    "geosite-bilibili",
-                    "geoip-bilibili"
-                ],
-                "server": "dns_bilibili"
-            },
-            {
-                "rule_set": "geosite-cn",
-                "server": "dns_direct"
-            },
-            {
-                "type": "logical",
-                "mode": "and",
-                "rules": [
-                    {
-                        "rule_set": "geolocation-!cn",
-                        "invert": true
-                    },
-                    {
-                        "rule_set": "geoip-cn"
-                    }
-                ],
-                "server": "dns_proxy",
-                "client_subnet": "61.141.249.0/24"
-            }
+          {
+            "outbound": "any",
+            "server": "dns_resolver"
+          },
+          {
+            "clash_mode": "direct",
+            "server": "dns_direct"
+          },
+          {
+            "clash_mode": "global",
+            "server": "dns_proxy"
+          },
+          {
+            "rule_set": "geosite-cn",
+            "server": "dns_direct"
+          },
+          {
+            "type": "logical",
+            "mode": "and",
+            "rules": [
+              {
+                "rule_set": "geolocation-!cn",
+                "invert": true
+              },
+              {
+                "rule_set": "geoip-cn"
+              }
+            ],
+            "server": "dns_proxy",
+            "client_subnet": "61.141.249.0/24"
+          }
         ],
-        "strategy": "prefer_ipv4",
+        "strategy": "ipv4_only",
         "final": "dns_proxy"
-    },
+      },
     "inbounds": [
         {
             "tag": "tun-in",
