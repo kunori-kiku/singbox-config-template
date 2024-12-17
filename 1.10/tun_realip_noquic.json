@@ -10,7 +10,7 @@
         "server": "ntp.aliyun.com",
         "server_port": 123,
         "interval": "30m",
-        "detour": "direct-out"
+        "detour": "proxy"
     },
     "experimental": {
         "cache_file": {
@@ -509,245 +509,245 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/myself/my_direct.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "reject_non_ip_no_drop",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/reject-no-drop.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "reject_non_ip_drop",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/reject-drop.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "reject_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/reject.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "reject_domainset",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/reject.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "reject_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/reject.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "cdn_domainset",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/cdn.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "cdn_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/cdn.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "stream_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/stream.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "stream_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/stream.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "ai_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/ai.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "telegram_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/telegram.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "telegram_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/telegram.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "apple_cdn",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/apple_cdn.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "apple_services",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/apple_services.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "apple_cn_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/apple_cn.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "microsoft_cdn_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/microsoft_cdn.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "microsoft_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/microsoft.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "neteasemusic_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/neteasemusic.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "neteasemusic_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/neteasemusic.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "download_domainset",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/download.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "download_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/download.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "lan_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/lan.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "lan_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/lan.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "domestic_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/domestic.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "direct_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/direct.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "global_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/global.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "domestic_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/domestic.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "china_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/china_ip.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "geoip-bilibili",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo-lite/geoip/bilibili.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "geosite-bilibili",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/bilibili.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "geolocation-!cn",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/geolocation-!cn.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "geoip-cn",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geoip/cn.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "geosite-cn",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/cn.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             },
             {
                 "tag": "crunchyroll_non_ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/refs/heads/main/supplementary_rules/crunchyroll.srs",
-                "download_detour": "direct-out"
+                "download_detour": "proxy"
             }
         ],
         "auto_detect_interface": true,
