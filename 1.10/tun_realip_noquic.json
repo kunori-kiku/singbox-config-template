@@ -506,13 +506,6 @@
         ],
         "rule_set": [
             {
-                "tag": "my_direct",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/myself/my_direct.srs",
-                "download_detour": "direct-out"
-            },
-            {
                 "tag": "reject_non_ip_no_drop",
                 "type": "remote",
                 "format": "binary",
