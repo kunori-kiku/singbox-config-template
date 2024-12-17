@@ -126,6 +126,21 @@
 			"tolerance": 50
 		},
         {
+            "tag": "proxy",
+            "type": "selector",
+            "outbounds": [
+                "direct-out",
+                "auto",
+                "HK",
+                "TW",
+                "SG",
+                "US",
+                "JP",
+                "{all}"
+            ],
+            "default": "auto"
+        },
+        {
             "tag": "HK",
             "type": "selector",
             "outbounds": [
@@ -179,21 +194,6 @@
             "filter": [
                 {"action": "include", "keywords": ["🇯🇵|JP|jp|Japan"]}
             ]
-        },
-        {
-            "tag": "proxy",
-            "type": "selector",
-            "outbounds": [
-                "direct-out",
-                "auto",
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "{all}"
-            ],
-            "default": "HK"
         },
         {
             "tag": "others",
