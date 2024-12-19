@@ -121,25 +121,12 @@
                 "outbound": "dns-out"
             },
             {
-                "rule_set": "geosite-category-ads-all",
-                "outbound": "block"
-            },
-            {
                 "clash_mode": "global",
                 "outbound": "global"
             },
             {
                 "clash_mode": "direct",
                 "outbound": "direct-out"
-            }
-        ],
-        "rule_set": [
-            {
-                "tag": "geosite-category-ads-all",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-ads-all.srs",
-                "download_detour": "proxy"
             }
         ]
     }
