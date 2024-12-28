@@ -309,7 +309,7 @@
             "tag": "HK-Alice-Home",
             "type": "socks",
             "server": "hkhome.kvm.one",
-            "port": 40000,
+            "server_port": 40000,
             "username": "alice",
             "password": "alicefofo123..@",
             "detour": "HK-Alice-II"
@@ -318,7 +318,7 @@
             "tag": "JP-Alice-Home",
             "type": "socks",
             "server": "jphome.kvm.one",
-            "port": 40000,
+            "server_port": 40000,
             "username": "alice",
             "password": "alicefofo123..@",
             "detour": "HK-Alice-II"
@@ -327,7 +327,7 @@
             "tag": "TW-Alice-Home",
             "type": "socks",
             "server": "twhome.kvm.one",
-            "port": 40000,
+            "server_port": 40000,
             "username": "alice",
             "password": "alicefofo123..@",
             "detour": "HK-Alice-II"
