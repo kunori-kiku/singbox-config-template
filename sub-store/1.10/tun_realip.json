@@ -306,13 +306,19 @@
             "outbounds": []
         },
         {
+            "tag": "HK-AliceFree",
+            "type": "selector",
+            "outbounds": [
+            ]
+        },
+        {
             "tag": "HK-Alice-Home",
             "type": "socks",
             "server": "hkhome.kvm.one",
             "server_port": 40000,
             "username": "alice",
             "password": "alicefofo123..@",
-            "detour": "HK-Alice-II"
+            "detour": "HK-AliceFree"
         },
         {
             "tag": "JP-Alice-Home",
@@ -321,7 +327,7 @@
             "server_port": 40000,
             "username": "alice",
             "password": "alicefofo123..@",
-            "detour": "HK-Alice-II"
+            "detour": "HK-AliceFree"
         },
         {
             "tag": "TW-Alice-Home",
@@ -330,7 +336,7 @@
             "server_port": 40000,
             "username": "alice",
             "password": "alicefofo123..@",
-            "detour": "HK-Alice-II"
+            "detour": "HK-AliceFree"
         }
     ],
     "route": {

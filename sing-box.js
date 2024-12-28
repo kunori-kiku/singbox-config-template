@@ -43,6 +43,9 @@ config.outbounds.map(i => {
   if (['other-nodes'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?!.*(港|台|日|新|美|🇭🇰|HK|hk|Hongkong|🇹🇼|TW|tw|Taiwan|🇸🇬|SG|sg|Singapore|🇺🇸|US|us|United States|🇯🇵|JP|jp|Japan)).*/))
   }
+  if (['HK-AliceFree'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /HK-Alice-Free/))
+  }
 })
 
 config.outbounds.forEach(outbound => {
