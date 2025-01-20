@@ -17,19 +17,22 @@ proxies.forEach(proxy => {
   if (/^(?!.*(?:IEPL|DT))/.test(proxy.tag)) {
     proxy.detour = "transfer-detour";
   }
+  if (/.*(Alice-Home).*/.test(proxy.tag)) {
+    proxy.detour = "HK-Alice-Free";
+  }
 });
 
 config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
   if (['hk', 'HK'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /.*(港|🇭🇰|HK|hk|Hongkong).*/))
+    i.outbounds.push(...getTags(proxies, /^(?!.*(Alice-Home)).*(港|🇭🇰|HK|hk|Hongkong).*/))
   }
   if (['tw', 'TW'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /.*(台|🇹🇼|TW|tw|Taiwan).*/))
+    i.outbounds.push(...getTags(proxies, /^(?!.*(Alice-Home)).*(台|🇹🇼|TW|tw|Taiwan).*/))
   }
   if (['jp', 'JP'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /.*(日|🇯🇵|JP|jp|Japan).*/))
+    i.outbounds.push(...getTags(proxies, /^(?!.*(Alice-Home)).*(日|🇯🇵|JP|jp|Japan).*/))
   }
   if (['sg', 'SG'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /.*(新|🇸🇬|SG|sg|Singapore).*/))
@@ -42,9 +45,6 @@ config.outbounds.map(i => {
   }
   if (['other-nodes'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?!.*(港|台|日|新|美|🇭🇰|HK|hk|Hongkong|🇹🇼|TW|tw|Taiwan|🇸🇬|SG|sg|Singapore|🇺🇸|US|us|United States|🇯🇵|JP|jp|Japan)).*/))
-  }
-  if (['HK-AliceFree'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /HK-Alice-Free/))
   }
 })
 
