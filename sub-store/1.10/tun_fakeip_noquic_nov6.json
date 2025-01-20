@@ -74,16 +74,15 @@
             },
             {
                 "inbound": "tun-in",
-                "rule_set": "geosite-cn",
-                "server": "dns_direct"
-            },
-            {
-                "inbound": "tun-in",
                 "query_type": [
                     "A"
                 ],
                 "server": "fakeip",
                 "rewrite_ttl": 1
+            },
+            {
+                "rule_set": "geosite-cn",
+                "server": "dns_direct"
             },
             {
                 "type": "logical",
