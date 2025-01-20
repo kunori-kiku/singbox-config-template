@@ -31,20 +31,14 @@
             {
                 "tag": "dns_proxy",
                 "address": "https://1.1.1.1/dns-query",
-                "strategy": "ipv4_only",
-                "detour": "proxy"
+                "detour": "proxy",
+                "strategy": "ipv4_only"
             },
             {
                 "tag": "dns_direct",
-                "address": "https://dns.alidns.com/dns-query",
-                "address_resolver": "dns_resolver",
-                "strategy": "ipv4_only",
-                "detour": "direct-out"
-            },
-            {
-                "tag": "dns_resolver",
                 "address": "h3://223.5.5.5/dns-query",
-                "detour": "direct-out"
+                "detour": "direct-out",
+                "strategy": "ipv4_only"
             },
             {
                 "tag": "block",
@@ -54,11 +48,16 @@
         "rules": [
             {
                 "outbound": "any",
-                "server": "dns_resolver"
+                "server": "dns_direct"
             },
             {
                 "clash_mode": "direct",
                 "server": "dns_direct"
+            },
+            {
+                "inbound": "tun-in",
+                "query_type": ["AAAA"],
+                "server": "block"
             },
             {
                 "clash_mode": "global",
@@ -93,12 +92,12 @@
             "type": "tun",
             "interface_name": "singbox",
             "address": [
-                "172.19.0.1/30"
+                "172.19.0.1/30",
+                "fdfe:2952:8964::1/126"
             ],
             "stack": "mixed",
             "auto_route": true,
-            "strict_route": true,
-            "sniff": true
+            "strict_route": true
         }
     ],
     "outbounds": [
@@ -271,16 +270,12 @@
         {
             "tag": "HK",
             "type": "selector",
-            "outbounds": [
-                "HK-Alice-Home"
-            ]
+            "outbounds": []
         },
         {
             "tag": "TW",
             "type": "selector",
-            "outbounds": [
-                "TW-Alice-Home"
-            ]
+            "outbounds": []
         },
         {
             "tag": "SG",
@@ -295,47 +290,12 @@
         {
             "tag": "JP",
             "type": "selector",
-            "outbounds": [
-                "JP-Alice-Home"
-            ]
+            "outbounds": []
         },
         {
             "tag": "other-nodes",
             "type": "selector",
             "outbounds": []
-        },
-        {
-            "tag": "HK-AliceFree",
-            "type": "selector",
-            "outbounds": [
-            ]
-        },
-        {
-            "tag": "HK-Alice-Home",
-            "type": "socks",
-            "server": "hkhome.kvm.one",
-            "server_port": 40000,
-            "username": "alice",
-            "password": "alicefofo123..@",
-            "detour": "HK-AliceFree"
-        },
-        {
-            "tag": "JP-Alice-Home",
-            "type": "socks",
-            "server": "jphome.kvm.one",
-            "server_port": 40000,
-            "username": "alice",
-            "password": "alicefofo123..@",
-            "detour": "HK-AliceFree"
-        },
-        {
-            "tag": "TW-Alice-Home",
-            "type": "socks",
-            "server": "twhome.kvm.one",
-            "server_port": 40000,
-            "username": "alice",
-            "password": "alicefofo123..@",
-            "detour": "HK-AliceFree"
         }
     ],
     "route": {
@@ -370,12 +330,6 @@
                     "reject_non_ip",
                     "reject_non_ip_no_drop",
                     "reject_domainset"
-                ],
-                "outbound": "block"
-            },
-            {
-                "rule_set": [
-                    "reject_ip"
                 ],
                 "outbound": "block"
             },
@@ -476,6 +430,18 @@
             },
             {
                 "rule_set": [
+                    "geosite-cn"
+                ],
+                "outbound": "direct-out"
+            },
+            {
+                "rule_set": [
+                    "reject_ip"
+                ],
+                "outbound": "block"
+            },
+            {
+                "rule_set": [
                     "telegram_ip"
                 ],
                 "outbound": "telegram"
@@ -508,7 +474,6 @@
             },
             {
                 "rule_set": [
-                    "geosite-cn",
                     "geoip-cn"
                 ],
                 "outbound": "direct-out"

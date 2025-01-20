@@ -14,7 +14,7 @@ let proxies = await produceArtifact({
 })
 
 proxies.forEach(proxy => {
-  if (/^(?!.*(?:IEPL|DT))/.test(proxy.tag)) {
+  if (/^(?!.*(?:IEPL|DT|Alice-Home))/.test(proxy.tag)) {
     proxy.detour = "transfer-detour";
   }
   if (/.*(Alice-Home).*/.test(proxy.tag)) {
@@ -26,13 +26,13 @@ config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
   if (['hk', 'HK'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*(Alice-Home)).*(港|🇭🇰|HK|hk|Hongkong).*/))
+    i.outbounds.push(...getTags(proxies, /.*(港|🇭🇰|HK|hk|Hongkong).*/))
   }
   if (['tw', 'TW'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*(Alice-Home)).*(台|🇹🇼|TW|tw|Taiwan).*/))
+    i.outbounds.push(...getTags(proxies, /.*(台|🇹🇼|TW|tw|Taiwan).*/))
   }
   if (['jp', 'JP'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*(Alice-Home)).*(日|🇯🇵|JP|jp|Japan).*/))
+    i.outbounds.push(...getTags(proxies, /.*(日|🇯🇵|JP|jp|Japan).*/))
   }
   if (['sg', 'SG'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /.*(新|🇸🇬|SG|sg|Singapore).*/))

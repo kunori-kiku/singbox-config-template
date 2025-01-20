@@ -34,28 +34,13 @@
         "servers": [
             {
                 "tag": "dns_proxy",
-                "address": [
-                    "https://1.1.1.1/dns-query",
-                    "h3://1.1.1.1/dns-query",
-                    "https://1.0.0.1/dns-query",
-                    "h3://1.0.0.1/dns-query",
-                    "https://8.8.8.8/dns-query",
-                    "h3://8.8.8.8/dns-query",
-                    "https://8.8.4.4/dns-query",
-                    "h3://8.8.4.4/dns-query"
-                ],
+                "address": "https://1.1.1.1/dns-query",
                 "detour": "proxy",
                 "strategy": "ipv4_only"
             },
             {
                 "tag": "dns_direct",
-                "address": [
-                    "https://223.5.5.5/dns-query",
-                    "h3://223.5.5.5/dns-query",
-                    "https://223.6.6.6/dns-query",
-                    "h3://223.6.6.6/dns-query",
-                    "https://120.53.53.53/dns-query"
-                ],
+                "address": "h3://223.5.5.5/dns-query",
                 "detour": "direct-out",
                 "strategy": "ipv4_only"
             },
@@ -79,7 +64,7 @@
             },
             {
                 "inbound": "tun-in",
-                "query_type": "HTTPS",
+                "query_type": ["HTTPS", "AAAA"],
                 "server": "block"
             },
             {
@@ -95,8 +80,7 @@
             {
                 "inbound": "tun-in",
                 "query_type": [
-                    "A",
-                    "AAAA"
+                    "A"
                 ],
                 "server": "fakeip",
                 "rewrite_ttl": 1
@@ -125,7 +109,8 @@
             "type": "tun",
             "interface_name": "singbox",
             "address": [
-                "172.19.0.1/30"
+                "172.19.0.1/30",
+                "fdfe:2952:8964::1/126"
             ],
             "stack": "mixed",
             "auto_route": true,
@@ -135,7 +120,7 @@
             "tag": "socks-in",
             "type": "socks",
             "listen": "127.0.0.1",
-            "port": 58964
+            "listen_port": 58964
         }
     ],
     "outbounds": [
@@ -316,16 +301,12 @@
         {
             "tag": "HK",
             "type": "selector",
-            "outbounds": [
-                "HK-Alice-Home"
-            ]
+            "outbounds": []
         },
         {
             "tag": "TW",
             "type": "selector",
-            "outbounds": [
-                "TW-Alice-Home"
-            ]
+            "outbounds": []
         },
         {
             "tag": "SG",
@@ -340,9 +321,7 @@
         {
             "tag": "JP",
             "type": "selector",
-            "outbounds": [
-                "JP-Alice-Home"
-            ]
+            "outbounds": []
         },
         {
             "tag": "other-nodes",
