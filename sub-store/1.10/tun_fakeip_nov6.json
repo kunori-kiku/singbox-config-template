@@ -34,7 +34,7 @@
         "servers": [
             {
                 "tag": "dns_proxy",
-                "address": "https://1.1.1.1/dns-query",
+                "address": "h3://1.1.1.1/dns-query",
                 "detour": "proxy",
                 "strategy": "ipv4_only"
             },
