@@ -121,7 +121,8 @@
             "tag": "socks-in",
             "type": "socks",
             "listen": "127.0.0.1",
-            "listen_port": 58964
+            "listen_port": 58964,
+            "domain_strategy": "ipv4_only"
         }
     ],
     "outbounds": [
@@ -162,7 +163,10 @@
         {
             "tag": "transfer-detour",
             "type": "selector",
-            "outbounds": []
+            "outbounds": [
+                "proxy"
+            ],
+            "default": "proxy"
         },
         {
             "tag": "apple",
@@ -208,6 +212,21 @@
                 "other-nodes"
             ],
             "default": "direct-out"
+        },
+        {
+            "tag": "tiktok",
+            "type": "selector",
+            "outbounds": [
+                "direct-out",
+                "proxy",
+                "HK",
+                "TW",
+                "SG",
+                "US",
+                "JP",
+                "other-nodes"
+            ],
+            "default": "proxy"
         },
         {
             "tag": "microsoft",
@@ -354,6 +373,7 @@
                 "outbound": "proxy"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "reject_non_ip",
                     "reject_non_ip_no_drop",
@@ -362,6 +382,7 @@
                 "outbound": "block"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "cdn_domainset",
                     "cdn_non_ip"
@@ -369,36 +390,49 @@
                 "outbound": "proxy"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "geosite-bilibili"
                 ],
                 "outbound": "bilibili"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "crunchyroll_non_ip"
                 ],
                 "outbound": "crunchyroll"
             },
             {
+                "inbound": "tun-in",
+                "rule_set": [
+                    "geosite-tiktok"
+                ],
+                "outbound": "crunchyroll"
+            },
+            {
+                "inbound": "tun-in",
                 "rule_set": [
                     "stream_non_ip"
                 ],
                 "outbound": "stream"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "ai_non_ip"
                 ],
                 "outbound": "openai"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "telegram_non_ip"
                 ],
                 "outbound": "telegram"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "apple_cdn",
                     "apple_cn_non_ip"
@@ -406,12 +440,14 @@
                 "outbound": "direct-out"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "microsoft_cdn_non_ip"
                 ],
                 "outbound": "direct-out"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "download_domainset",
                     "download_non_ip"
@@ -419,36 +455,42 @@
                 "outbound": "proxy"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "apple_services"
                 ],
                 "outbound": "apple"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "microsoft_non_ip"
                 ],
                 "outbound": "microsoft"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "global_non_ip"
                 ],
                 "outbound": "proxy"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "neteasemusic_non_ip"
                 ],
                 "outbound": "neteasemusic"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "global_non_ip"
                 ],
                 "outbound": "proxy"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": [
                     "domestic_non_ip",
                     "lan_non_ip",
@@ -457,12 +499,13 @@
                 "outbound": "direct-out"
             },
             {
+                "inbound": "tun-in",
                 "rule_set": "geosite-cn",
                 "outbound": "direct-out"
             },
             {
                 "inbound": "tun-in",
-                "domain_regex": ".*",
+                "domain_regex": ".",
                 "outbound": "full-resolve-out"
             },
             {
@@ -562,7 +605,7 @@
                 "tag": "stream_non_ip",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/stream.srs",
+                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/stream.srs",
                 "download_detour": "direct-out"
             },
             {
@@ -604,7 +647,7 @@
                 "tag": "apple_services",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/apple_services.srs",
+                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/apple_services.srs",
                 "download_detour": "direct-out"
             },
             {
@@ -681,7 +724,7 @@
                 "tag": "direct_non_ip",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/direct.srs",
+                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/direct.srs",
                 "download_detour": "direct-out"
             },
             {
@@ -717,6 +760,13 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/bilibili.srs",
+                "download_detour": "direct-out"
+            },
+            {
+                "tag": "geosite-tiktok",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/tiktok.srs",
                 "download_detour": "direct-out"
             },
             {

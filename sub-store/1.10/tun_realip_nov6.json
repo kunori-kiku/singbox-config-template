@@ -130,7 +130,10 @@
         {
             "tag": "transfer-detour",
             "type": "selector",
-            "outbounds": []
+            "outbounds": [
+                "proxy"
+            ],
+            "default": "proxy"
         },
         {
             "tag": "apple",
@@ -176,6 +179,21 @@
                 "other-nodes"
             ],
             "default": "direct-out"
+        },
+        {
+            "tag": "tiktok",
+            "type": "selector",
+            "outbounds": [
+                "direct-out",
+                "proxy",
+                "HK",
+                "TW",
+                "SG",
+                "US",
+                "JP",
+                "other-nodes"
+            ],
+            "default": "proxy"
         },
         {
             "tag": "microsoft",
@@ -347,6 +365,12 @@
                     "crunchyroll_non_ip"
                 ],
                 "outbound": "crunchyroll"
+            },
+            {
+                "rule_set": [
+                    "geosite-tiktok"
+                ],
+                "outbound": "tiktok"
             },
             {
                 "rule_set": [
@@ -529,7 +553,7 @@
                 "tag": "stream_non_ip",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/stream.srs",
+                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/stream.srs",
                 "download_detour": "direct-out"
             },
             {
@@ -571,7 +595,7 @@
                 "tag": "apple_services",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/apple_services.srs",
+                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/apple_services.srs",
                 "download_detour": "direct-out"
             },
             {
@@ -648,7 +672,7 @@
                 "tag": "direct_non_ip",
                 "type": "remote",
                 "format": "binary",
-                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/direct.srs",
+                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/direct.srs",
                 "download_detour": "direct-out"
             },
             {
@@ -684,6 +708,13 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/bilibili.srs",
+                "download_detour": "direct-out"
+            },
+            {
+                "tag": "geosite-tiktok",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/tiktok.srs",
                 "download_detour": "direct-out"
             },
             {
