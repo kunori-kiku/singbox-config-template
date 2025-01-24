@@ -287,7 +287,7 @@
                 "JP",
                 "other-nodes"
             ],
-            "default": "TW"
+            "default": "proxy"
         },
         {
             "tag": "crunchyroll",
