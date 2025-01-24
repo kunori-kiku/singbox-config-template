@@ -125,10 +125,7 @@
         {
             "tag": "transfer-detour",
             "type": "selector",
-            "outbounds": [
-                "proxy"
-            ],
-            "default": "proxy"
+            "outbounds": []
         },
         {
             "tag": "apple",
