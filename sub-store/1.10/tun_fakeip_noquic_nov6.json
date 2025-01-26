@@ -151,15 +151,13 @@
             "tag": "proxy",
             "type": "selector",
             "outbounds": [
-                "direct-out",
                 "HK",
                 "TW",
                 "SG",
                 "US",
                 "JP",
                 "other-nodes"
-            ],
-            "default": "direct-out"
+            ]
         },
         {
             "tag": "transfer-detour",
