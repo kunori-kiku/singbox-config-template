@@ -29,20 +29,21 @@
     "dns": {
         "fakeip": {
             "enabled": true,
-            "inet4_range": "198.18.0.0/15"
+            "inet4_range": "198.18.0.0/15",
+            "inet6_range": "fc00:8964::/32"
         },
         "servers": [
             {
                 "tag": "dns_proxy",
                 "address": "quic://8.8.8.8",
                 "detour": "proxy",
-                "strategy": "ipv4_only"
+                "strategy": "prefer_ipv4"
             },
             {
                 "tag": "dns_direct",
                 "address": "quic://223.5.5.5",
                 "detour": "direct-out",
-                "strategy": "ipv4_only"
+                "strategy": "prefer_ipv4"
             },
             {
                 "tag": "block",
@@ -63,19 +64,20 @@
                 "server": "dns_direct"
             },
             {
-                "inbound": "tun-in",
-                "query_type": ["HTTPS", "AAAA"],
+                "action": "route",
+                "query_type": "HTTPS",
                 "server": "block"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "clash_mode": "global",
                 "server": "fakeip"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "query_type": [
-                    "A"
+                    "A",
+                    "AAAA"
                 ],
                 "server": "fakeip",
                 "rewrite_ttl": 1
@@ -139,10 +141,6 @@
         {
             "tag": "dns-out",
             "type": "dns"
-        },
-        {
-            "tag": "block",
-            "type": "block"
         },
         {
             "tag": "proxy",
@@ -358,6 +356,11 @@
                 "outbound": "dns-out"
             },
             {
+                "network": "udp",
+                "port": 443,
+                "outbound": "block"
+            },
+            {
                 "clash_mode": "direct",
                 "outbound": "direct-out"
             },
@@ -366,7 +369,7 @@
                 "outbound": "proxy"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "reject_non_ip",
                     "reject_non_ip_no_drop",
@@ -375,7 +378,7 @@
                 "outbound": "block"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "cdn_domainset",
                     "cdn_non_ip"
@@ -383,49 +386,49 @@
                 "outbound": "proxy"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "geosite-bilibili"
                 ],
                 "outbound": "bilibili"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "crunchyroll_non_ip"
                 ],
                 "outbound": "crunchyroll"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "geosite-tiktok"
                 ],
                 "outbound": "crunchyroll"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "stream_non_ip"
                 ],
                 "outbound": "stream"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "ai_non_ip"
                 ],
                 "outbound": "openai"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "telegram_non_ip"
                 ],
                 "outbound": "telegram"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "apple_cdn",
                     "apple_cn_non_ip"
@@ -433,14 +436,14 @@
                 "outbound": "direct-out"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "microsoft_cdn_non_ip"
                 ],
                 "outbound": "direct-out"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "download_domainset",
                     "download_non_ip"
@@ -448,42 +451,42 @@
                 "outbound": "proxy"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "apple_services"
                 ],
                 "outbound": "apple"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "microsoft_non_ip"
                 ],
                 "outbound": "microsoft"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "global_non_ip"
                 ],
                 "outbound": "proxy"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "neteasemusic_non_ip"
                 ],
                 "outbound": "neteasemusic"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "global_non_ip"
                 ],
                 "outbound": "proxy"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "domestic_non_ip",
                     "lan_non_ip",
@@ -492,12 +495,12 @@
                 "outbound": "direct-out"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": "geosite-cn",
                 "outbound": "direct-out"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "domain_regex": ".",
                 "outbound": "full-resolve-out"
             },
