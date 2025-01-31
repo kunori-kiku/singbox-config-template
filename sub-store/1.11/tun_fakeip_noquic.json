@@ -46,10 +46,6 @@
                 "strategy": "prefer_ipv4"
             },
             {
-                "tag": "block",
-                "address": "rcode://success"
-            },
-            {
                 "tag": "fakeip",
                 "address": "fakeip"
             }
@@ -60,31 +56,27 @@
                 "server": "dns_direct"
             },
             {
+                "action": "route",
                 "clash_mode": "direct",
                 "server": "dns_direct"
             },
             {
-                "inbound": "tun-in",
-                "query_type": "HTTPS",
-                "server": "block"
+                "action": "reject",
+                "query_type": "HTTPS"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "clash_mode": "global",
                 "server": "fakeip"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "query_type": [
                     "A",
                     "AAAA"
                 ],
                 "server": "fakeip",
                 "rewrite_ttl": 1
-            },
-            {
-                "rule_set": "geosite-cn",
-                "server": "dns_direct"
             },
             {
                 "type": "logical",
@@ -116,52 +108,38 @@
             "stack": "mixed",
             "auto_route": true,
             "strict_route": true
-        },
-        {
-            "tag": "socks-in",
-            "type": "socks",
-            "listen": "127.0.0.1",
-            "listen_port": 58964,
-            "domain_strategy": "ipv4_only"
         }
     ],
     "outbounds": [
-        {
-            "tag": "full-resolve-out",
-            "type": "socks",
-            "server": "127.0.0.1",
-            "server_port": 58964,
-            "version": "5",
-            "udp_over_tcp": false
-        },
         {
             "tag": "direct-out",
             "type": "direct"
         },
         {
-            "tag": "dns-out",
-            "type": "dns"
-        },
-        {
-            "tag": "block",
-            "type": "block"
-        },
-        {
             "tag": "proxy",
             "type": "selector",
             "outbounds": [
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "other-nodes"
+                "🇭🇰HK",
+                "🇼🇸TW",
+                "🇸🇬SG",
+                "🇺🇸US",
+                "🇯🇵JP",
+                "general-detour",
+                "🇭🇰detour-HK",
+                "🇼🇸detour-TW",
+                "🇸🇬detour-SG",
+                "🇺🇸detour-US",
+                "🇯🇵detour-JP",
+                "other",
+                "other-detour"
             ]
         },
         {
-            "tag": "transfer-detour",
-            "type": "selector",
-            "outbounds": []
+            "tag": "general-detour",
+            "type": "urltest",
+            "tolerance": 5000,
+            "outbounds": [],
+            "interrupt_exist_connections": true
         },
         {
             "tag": "apple",
@@ -169,12 +147,19 @@
             "outbounds": [
                 "direct-out",
                 "proxy",
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "other-nodes"
+                "🇭🇰HK",
+                "🇼🇸TW",
+                "🇸🇬SG",
+                "🇺🇸US",
+                "🇯🇵JP",
+                "general-detour",
+                "🇭🇰detour-HK",
+                "🇼🇸detour-TW",
+                "🇸🇬detour-SG",
+                "🇺🇸detour-US",
+                "🇯🇵detour-JP",
+                "other",
+                "other-detour"
             ],
             "default": "direct-out"
         },
@@ -184,12 +169,19 @@
             "outbounds": [
                 "direct-out",
                 "proxy",
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "other-nodes"
+                "🇭🇰HK",
+                "🇼🇸TW",
+                "🇸🇬SG",
+                "🇺🇸US",
+                "🇯🇵JP",
+                "general-detour",
+                "🇭🇰detour-HK",
+                "🇼🇸detour-TW",
+                "🇸🇬detour-SG",
+                "🇺🇸detour-US",
+                "🇯🇵detour-JP",
+                "other",
+                "other-detour"
             ],
             "default": "proxy"
         },
@@ -199,12 +191,19 @@
             "outbounds": [
                 "direct-out",
                 "proxy",
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "other-nodes"
+                "🇭🇰HK",
+                "🇼🇸TW",
+                "🇸🇬SG",
+                "🇺🇸US",
+                "🇯🇵JP",
+                "general-detour",
+                "🇭🇰detour-HK",
+                "🇼🇸detour-TW",
+                "🇸🇬detour-SG",
+                "🇺🇸detour-US",
+                "🇯🇵detour-JP",
+                "other",
+                "other-detour"
             ],
             "default": "direct-out"
         },
@@ -214,12 +213,19 @@
             "outbounds": [
                 "direct-out",
                 "proxy",
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "other-nodes"
+                "🇭🇰HK",
+                "🇼🇸TW",
+                "🇸🇬SG",
+                "🇺🇸US",
+                "🇯🇵JP",
+                "general-detour",
+                "🇭🇰detour-HK",
+                "🇼🇸detour-TW",
+                "🇸🇬detour-SG",
+                "🇺🇸detour-US",
+                "🇯🇵detour-JP",
+                "other",
+                "other-detour"
             ],
             "default": "proxy"
         },
@@ -229,12 +235,19 @@
             "outbounds": [
                 "direct-out",
                 "proxy",
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "other-nodes"
+                "🇭🇰HK",
+                "🇼🇸TW",
+                "🇸🇬SG",
+                "🇺🇸US",
+                "🇯🇵JP",
+                "general-detour",
+                "🇭🇰detour-HK",
+                "🇼🇸detour-TW",
+                "🇸🇬detour-SG",
+                "🇺🇸detour-US",
+                "🇯🇵detour-JP",
+                "other",
+                "other-detour"
             ],
             "default": "proxy"
         },
@@ -244,12 +257,19 @@
             "outbounds": [
                 "direct-out",
                 "proxy",
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "other-nodes"
+                "🇭🇰HK",
+                "🇼🇸TW",
+                "🇸🇬SG",
+                "🇺🇸US",
+                "🇯🇵JP",
+                "general-detour",
+                "🇭🇰detour-HK",
+                "🇼🇸detour-TW",
+                "🇸🇬detour-SG",
+                "🇺🇸detour-US",
+                "🇯🇵detour-JP",
+                "other",
+                "other-detour"
             ],
             "default": "direct-out"
         },
@@ -259,12 +279,19 @@
             "outbounds": [
                 "direct-out",
                 "proxy",
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "other-nodes"
+                "🇭🇰HK",
+                "🇼🇸TW",
+                "🇸🇬SG",
+                "🇺🇸US",
+                "🇯🇵JP",
+                "general-detour",
+                "🇭🇰detour-HK",
+                "🇼🇸detour-TW",
+                "🇸🇬detour-SG",
+                "🇺🇸detour-US",
+                "🇯🇵detour-JP",
+                "other",
+                "other-detour"
             ],
             "default": "proxy"
         },
@@ -274,12 +301,19 @@
             "outbounds": [
                 "direct-out",
                 "proxy",
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "other-nodes"
+                "🇭🇰HK",
+                "🇼🇸TW",
+                "🇸🇬SG",
+                "🇺🇸US",
+                "🇯🇵JP",
+                "general-detour",
+                "🇭🇰detour-HK",
+                "🇼🇸detour-TW",
+                "🇸🇬detour-SG",
+                "🇺🇸detour-US",
+                "🇯🇵detour-JP",
+                "other",
+                "other-detour"
             ],
             "default": "proxy"
         },
@@ -289,12 +323,19 @@
             "outbounds": [
                 "direct-out",
                 "proxy",
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "other-nodes"
+                "🇭🇰HK",
+                "🇼🇸TW",
+                "🇸🇬SG",
+                "🇺🇸US",
+                "🇯🇵JP",
+                "general-detour",
+                "🇭🇰detour-HK",
+                "🇼🇸detour-TW",
+                "🇸🇬detour-SG",
+                "🇺🇸detour-US",
+                "🇯🇵detour-JP",
+                "other",
+                "other-detour"
             ],
             "default": "proxy"
         },
@@ -304,44 +345,129 @@
             "outbounds": [
                 "direct-out",
                 "proxy",
-                "HK",
-                "TW",
-                "SG",
-                "US",
-                "JP",
-                "other-nodes"
+                "🇭🇰HK",
+                "🇼🇸TW",
+                "🇸🇬SG",
+                "🇺🇸US",
+                "🇯🇵JP",
+                "general-detour",
+                "🇭🇰detour-HK",
+                "🇼🇸detour-TW",
+                "🇸🇬detour-SG",
+                "🇺🇸detour-US",
+                "🇯🇵detour-JP",
+                "other",
+                "other-detour"
             ],
             "default": "proxy"
         },
         {
-            "tag": "HK",
-            "type": "selector",
-            "outbounds": []
+            "tag": "🇭🇰HK",
+            "type": "urltest",
+            "tolerance": 5000,
+            "interrupt_exist_connections": true,
+            "outbounds": [
+                "🇭🇰HK-detour"
+            ]
         },
         {
-            "tag": "TW",
-            "type": "selector",
-            "outbounds": []
+            "tag": "🇼🇸TW",
+            "type": "urltest",
+            "tolerance": 5000,
+            "interrupt_exist_connections": true,
+            "outbounds": [
+                "🇼🇸TW-detour"
+            ]
         },
         {
-            "tag": "SG",
-            "type": "selector",
-            "outbounds": []
+            "tag": "🇯🇵JP",
+            "type": "urltest",
+            "tolerance": 5000,
+            "interrupt_exist_connections": true,
+            "outbounds": [
+                "🇯🇵JP-detour"
+            ]
         },
         {
-            "tag": "US",
-            "type": "selector",
-            "outbounds": []
+            "tag": "🇸🇬SG",
+            "type": "urltest",
+            "tolerance": 5000,
+            "interrupt_exist_connections": true,
+            "outbounds": [
+                "🇸🇬SG-detour"
+            ]
         },
         {
-            "tag": "JP",
-            "type": "selector",
-            "outbounds": []
+            "tag": "🇺🇸US",
+            "type": "urltest",
+            "tolerance": 5000,
+            "interrupt_exist_connections": true,
+            "outbounds": [
+                "🇺🇸US-detour"
+            ]
         },
         {
-            "tag": "other-nodes",
+            "tag": "🇭🇰HK-detour",
             "type": "selector",
-            "outbounds": []
+            "outbounds": [
+                "general-detour"
+            ],
+            "interrupt_exist_connections": true,
+            "default": "general-detour"
+        },
+        {
+            "tag": "🇼🇸TW-detour",
+            "type": "selector",
+            "outbounds": [
+                "general-detour"
+            ],
+            "interrupt_exist_connections": true,
+            "default": "general-detour"
+        },
+        {
+            "tag": "🇯🇵JP-detour",
+            "type": "selector",
+            "outbounds": [
+                "general-detour"
+            ],
+            "interrupt_exist_connections": true,
+            "default": "general-detour"
+        },
+        {
+            "tag": "🇸🇬SG-detour",
+            "type": "selector",
+            "outbounds": [
+                "general-detour"
+            ],
+            "interrupt_exist_connections": true,
+            "default": "general-detour"
+        },
+        {
+            "tag": "🇺🇸US-detour",
+            "type": "selector",
+            "outbounds": [
+                "general-detour"
+            ],
+            "interrupt_exist_connections": true,
+            "default": "general-detour"
+        },
+        {
+            "tag": "other",
+            "type": "urltest",
+            "tolerance": 5000,
+            "interrupt_exist_connections": true,
+            "outbounds": [
+                "other-detour"
+            ]
+        },
+        {
+            "tag": "other-detour",
+            "type": "selector",
+            "outbounds": [
+                "general-detour"
+            ],
+            "interrupt_exist_connections": true,
+            "default": "general-detour"
         }
     ],
     "route": {
@@ -354,35 +480,37 @@
                         "protocol": "dns"
                     },
                     {
+                        "network": "udp",
                         "port": 53
                     }
                 ],
-                "outbound": "dns-out"
+                "action": "hijack-dns"
             },
             {
                 "network": "udp",
                 "port": 443,
-                "outbound": "block"
+                "action": "reject"
             },
             {
                 "clash_mode": "direct",
+                "action": "route",
                 "outbound": "direct-out"
             },
             {
                 "clash_mode": "global",
+                "action": "route",
                 "outbound": "proxy"
             },
             {
-                "inbound": "tun-in",
                 "rule_set": [
                     "reject_non_ip",
                     "reject_non_ip_no_drop",
                     "reject_domainset"
                 ],
-                "outbound": "block"
+                "action": "reject"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "cdn_domainset",
                     "cdn_non_ip"
@@ -390,49 +518,49 @@
                 "outbound": "proxy"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "geosite-bilibili"
                 ],
                 "outbound": "bilibili"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "crunchyroll_non_ip"
                 ],
                 "outbound": "crunchyroll"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "geosite-tiktok"
                 ],
                 "outbound": "crunchyroll"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "stream_non_ip"
                 ],
                 "outbound": "stream"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "ai_non_ip"
                 ],
                 "outbound": "openai"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "telegram_non_ip"
                 ],
                 "outbound": "telegram"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "apple_cdn",
                     "apple_cn_non_ip"
@@ -440,14 +568,14 @@
                 "outbound": "direct-out"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "microsoft_cdn_non_ip"
                 ],
                 "outbound": "direct-out"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "download_domainset",
                     "download_non_ip"
@@ -455,42 +583,42 @@
                 "outbound": "proxy"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "apple_services"
                 ],
                 "outbound": "apple"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "microsoft_non_ip"
                 ],
                 "outbound": "microsoft"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "global_non_ip"
                 ],
                 "outbound": "proxy"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "neteasemusic_non_ip"
                 ],
                 "outbound": "neteasemusic"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "global_non_ip"
                 ],
                 "outbound": "proxy"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": [
                     "domestic_non_ip",
                     "lan_non_ip",
@@ -499,55 +627,56 @@
                 "outbound": "direct-out"
             },
             {
-                "inbound": "tun-in",
+                "action": "route",
                 "rule_set": "geosite-cn",
                 "outbound": "direct-out"
             },
             {
-                "inbound": "tun-in",
-                "domain_regex": ".",
-                "outbound": "full-resolve-out"
+                "action": "resolve",
+                "strategy": "prefer_ipv4"
             },
             {
                 "rule_set": [
                     "reject_ip"
                 ],
-                "outbound": "block"
+                "action": "reject"
             },
             {
                 "rule_set": [
                     "telegram_ip"
                 ],
+                "action": "route",
                 "outbound": "telegram"
             },
             {
                 "rule_set": [
                     "geoip-bilibili"
                 ],
+                "action": "route",
                 "outbound": "bilibili"
             },
             {
                 "rule_set": [
                     "stream_ip"
                 ],
+                "action": "route",
                 "outbound": "stream"
             },
             {
                 "rule_set": [
                     "neteasemusic_ip"
                 ],
+                "action": "route",
                 "outbound": "neteasemusic"
             },
             {
                 "rule_set": [
                     "lan_ip",
                     "domestic_ip",
-                    "china_ip"
+                    "china_ip",
+                    "geoip-cn"
                 ],
-                "outbound": "direct-out"
-            },
-            {
-                "rule_set": "geoip-cn",
+                "action": "route",
                 "outbound": "direct-out"
             }
         ],

@@ -14,7 +14,7 @@ let proxies = await produceArtifact({
 })
 
 proxies.forEach(proxy => {
-  if (/^(?!.*(?:IEPL|DT|Alice-Home))/.test(proxy.tag)) {
+  if (/^(?!.*(?:DT|IEPL|VPC|Alice-Home))/.test(proxy.tag)) {
     proxy.detour = "transfer-detour";
   }
   if (/.*(Alice-Home).*/.test(proxy.tag)) {
@@ -25,23 +25,23 @@ proxies.forEach(proxy => {
 config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
-  if (['hk', 'HK'].includes(i.tag)) {
+  if (['hk', 'HK', '🇭🇰HK'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW)).*(港|🇭🇰|HK|hk|Hongkong).*/))
   }
-  if (['tw', 'TW'].includes(i.tag)) {
+  if (['tw', 'TW', '🇼🇸TW'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW)).*(台|🇹🇼|TW|tw|Taiwan).*/))
   }
-  if (['jp', 'JP'].includes(i.tag)) {
+  if (['jp', 'JP', '🇯🇵JP'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW)).*(日|🇯🇵|JP|jp|Japan).*/))
   }
-  if (['sg', 'SG'].includes(i.tag)) {
+  if (['sg', 'SG', '🇸🇬SG'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW)).*(新|🇸🇬|SG|sg|Singapore).*/))
   }
-  if (['us', 'US'].includes(i.tag)) {
+  if (['us', 'US', '🇺🇸US'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW)).*(美|🇺🇸|US|us|United States).*/))
   }
   if (['transfer-detour'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /.*(IEPL|DT).*/))
+    i.outbounds.push(...getTags(proxies, /.*(IEPL|VPC).*/))
   }
   if (['other-nodes'].includes(i.tag)) {
     i.outbounds.push(...getTags(proxies, /^(?!.*(港|台|日|新|美|🇭🇰|HK|hk|Hongkong|🇹🇼|TW|tw|Taiwan|🇸🇬|SG|sg|Singapore|🇺🇸|US|us|United States|🇯🇵|JP|jp|Japan)).*/))

@@ -14,8 +14,23 @@ let proxies = await produceArtifact({
 })
 
 proxies.forEach(proxy => {
-  if (/^(?!.*(?:IEPL|DT|Alice-Home))/.test(proxy.tag)) {
-    proxy.detour = "transfer-detour";
+  if (/^(?!.*(?:DT|IEPL|VPC|Alice-Home)).*(港|🇭🇰|HK|hk|Hongkong).*/.test(proxy.tag)) {
+    proxy.detour = "🇭🇰HK-detour";
+  }
+  if (/^(?!.*(?:DT|IEPL|VPC|Alice-Home)).*(台|🇹🇼|🇼🇸|TW|tw|Taiwan).*/.test(proxy.tag)) {
+    proxy.detour = "🇼🇸TW-detour";
+  }
+  if (/^(?!.*(?:DT|IEPL|VPC|Alice-Home)).*(日|🇯🇵|JP|jp|Japan).*/.test(proxy.tag)) {
+    proxy.detour = "🇯🇵JP-detour";
+  }
+  if (/^(?!.*(?:DT|IEPL|VPC|Alice-Home)).*(新|🇸🇬|SG|sg|Singapore).*/.test(proxy.tag)) {
+    proxy.detour = "🇸🇬SG-detour";
+  }
+  if (/^(?!.*(?:DT|IEPL|VPC|Alice-Home)).*(美|🇺🇸|US|us|United States).*/.test(proxy.tag)) {
+    proxy.detour = "🇺🇸US-detour";
+  }
+  if (/^(?!.*(?:DT|IEPL|VPC|Alice-Home|港|台|日|新|美|🇭🇰|HK|hk|Hongkong|🇹🇼|TW|tw|Taiwan|🇸🇬|SG|sg|Singapore|🇺🇸|US|us|United States|🇯🇵|JP|jp|Japan))/.test(proxy.tag)) {
+    proxy.detour = "other-detour";
   }
   if (/.*(Alice-Home).*/.test(proxy.tag)) {
     proxy.detour = "HK-Alice-Free";
@@ -25,26 +40,26 @@ proxies.forEach(proxy => {
 config.outbounds.push(...proxies)
 
 config.outbounds.map(i => {
-  if (['hk', 'HK'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW)).*(港|🇭🇰|HK|hk|Hongkong).*/))
+  if (['hk', 'HK', '🇭🇰HK'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW|IEPL|VPC)).*(港|🇭🇰|HK|hk|Hongkong).*/))
   }
-  if (['tw', 'TW'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW)).*(台|🇹🇼|TW|tw|Taiwan).*/))
+  if (['tw', 'TW', '🇼🇸TW'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW|IEPL|VPC)).*(台|🇹🇼|🇼🇸|TW|tw|Taiwan).*/))
   }
-  if (['jp', 'JP'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW)).*(日|🇯🇵|JP|jp|Japan).*/))
+  if (['jp', 'JP', '🇯🇵JP'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW|IEPL|VPC)).*(日|🇯🇵|JP|jp|Japan).*/))
   }
-  if (['sg', 'SG'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW)).*(新|🇸🇬|SG|sg|Singapore).*/))
+  if (['sg', 'SG', '🇸🇬SG'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW|IEPL|VPC)).*(新|🇸🇬|SG|sg|Singapore).*/))
   }
-  if (['us', 'US'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW)).*(美|🇺🇸|US|us|United States).*/))
+  if (['us', 'US', '🇺🇸US'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW|IEPL|VPC)).*(美|🇺🇸|US|us|United States).*/))
   }
-  if (['transfer-detour'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /.*(IEPL|DT).*/))
+  if (['general-detour', '🇭🇰HK-detour', '🇼🇸TW-detour', '🇯🇵JP-detour', '🇸🇬SG-detour', '🇺🇸US-detour', 'other-detour'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /.*(IEPL|VPC).*/))
   }
-  if (['other-nodes'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*(港|台|日|新|美|🇭🇰|HK|hk|Hongkong|🇹🇼|TW|tw|Taiwan|🇸🇬|SG|sg|Singapore|🇺🇸|US|us|United States|🇯🇵|JP|jp|Japan)).*/))
+  if (['other'].includes(i.tag)) {
+    i.outbounds.push(...getTags(proxies, /^(?!.*(?:RAW|IEPL|VPC|港|台|日|新|美|🇭🇰|HK|hk|Hongkong|🇹🇼|TW|tw|Taiwan|🇸🇬|SG|sg|Singapore|🇺🇸|US|us|United States|🇯🇵|JP|jp|Japan)).*/))
   }
 })
 
