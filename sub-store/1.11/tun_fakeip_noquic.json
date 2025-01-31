@@ -35,15 +35,13 @@
         "servers": [
             {
                 "tag": "dns_proxy",
-                "address": "quic://8.8.8.8",
-                "detour": "proxy",
-                "strategy": "prefer_ipv4"
+                "address": "h3://1.1.1.1/dns-query",
+                "detour": "proxy"
             },
             {
                 "tag": "dns_direct",
                 "address": "quic://223.5.5.5",
-                "detour": "direct-out",
-                "strategy": "prefer_ipv4"
+                "detour": "direct-out"
             },
             {
                 "tag": "fakeip",
@@ -136,8 +134,7 @@
         },
         {
             "tag": "general-detour",
-            "type": "urltest",
-            "tolerance": 5000,
+            "type": "selector",
             "outbounds": [],
             "interrupt_exist_connections": true
         },
@@ -363,8 +360,7 @@
         },
         {
             "tag": "🇭🇰HK",
-            "type": "urltest",
-            "tolerance": 5000,
+            "type": "selector",
             "interrupt_exist_connections": true,
             "outbounds": [
                 "🇭🇰HK-detour"
@@ -372,8 +368,7 @@
         },
         {
             "tag": "🇼🇸TW",
-            "type": "urltest",
-            "tolerance": 5000,
+            "type": "selector",
             "interrupt_exist_connections": true,
             "outbounds": [
                 "🇼🇸TW-detour"
@@ -381,8 +376,7 @@
         },
         {
             "tag": "🇯🇵JP",
-            "type": "urltest",
-            "tolerance": 5000,
+            "type": "selector",
             "interrupt_exist_connections": true,
             "outbounds": [
                 "🇯🇵JP-detour"
@@ -390,8 +384,7 @@
         },
         {
             "tag": "🇸🇬SG",
-            "type": "urltest",
-            "tolerance": 5000,
+            "type": "selector",
             "interrupt_exist_connections": true,
             "outbounds": [
                 "🇸🇬SG-detour"
@@ -399,8 +392,7 @@
         },
         {
             "tag": "🇺🇸US",
-            "type": "urltest",
-            "tolerance": 5000,
+            "type": "selector",
             "interrupt_exist_connections": true,
             "outbounds": [
                 "🇺🇸US-detour"
@@ -453,8 +445,7 @@
         },
         {
             "tag": "other",
-            "type": "urltest",
-            "tolerance": 5000,
+            "type": "selector",
             "interrupt_exist_connections": true,
             "outbounds": [
                 "other-detour"

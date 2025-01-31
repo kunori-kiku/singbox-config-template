@@ -34,7 +34,7 @@
         "servers": [
             {
                 "tag": "dns_proxy",
-                "address": "quic://8.8.8.8",
+                "address": "h3://1.1.1.1/dns-query",
                 "detour": "proxy",
                 "strategy": "ipv4_only"
             },
