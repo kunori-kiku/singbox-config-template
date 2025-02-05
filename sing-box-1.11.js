@@ -29,7 +29,7 @@ proxies.forEach(proxy => {
   if (/^(?!.*(?:DT|IEPL|VPC|Alice-Home)).*(美|🇺🇸|US|us|United States).*/.test(proxy.tag)) {
     proxy.detour = "🇺🇸US-detour";
   }
-  if (/^(?!.*(?:DT|IEPL|VPC|Alice-Home|港|台|日|新|美|🇭🇰|HK|hk|Hongkong|🇹🇼|TW|tw|Taiwan|🇸🇬|SG|sg|Singapore|🇺🇸|US|us|United States|🇯🇵|JP|jp|Japan))/.test(proxy.tag)) {
+  if (/^(?!.*(?:DT|IEPL|VPC|Alice-Home|港|台|日|新|美|🇭🇰|HK|hk|Hongkong|🇹🇼|🇼🇸|TW|tw|Taiwan|🇸🇬|SG|sg|Singapore|🇺🇸|US|us|United States|🇯🇵|JP|jp|Japan))/.test(proxy.tag)) {
     proxy.detour = "other-detour";
   }
   if (/.*(Alice-Home).*/.test(proxy.tag)) {
