@@ -87,8 +87,7 @@
                         "rule_set": "geoip-cn"
                     }
                 ],
-                "server": "dns_proxy",
-                "client_subnet": "61.141.249.0/24"
+                "server": "dns_direct"
             }
         ],
         "final": "dns_proxy"
@@ -526,7 +525,7 @@
                 "rule_set": [
                     "geosite-tiktok"
                 ],
-                "outbound": "crunchyroll"
+                "outbound": "tiktok"
             },
             {
                 "action": "route",
