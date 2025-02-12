@@ -115,222 +115,32 @@
             "tag": "proxy",
             "type": "selector",
             "outbounds": [
-                "🇭🇰HK",
-                "🇼🇸TW",
-                "🇸🇬SG",
-                "🇺🇸US",
-                "🇯🇵JP",
-                "general-detour",
-                "🇭🇰HK-detour",
-                "🇼🇸TW-detour",
-                "🇸🇬SG-detour",
-                "🇺🇸US-detour",
-                "🇯🇵JP-detour",
-                "other",
-                "other-detour"
             ]
-        },
-        {
-            "tag": "general-detour",
-            "type": "selector",
-            "outbounds": [],
-            "interrupt_exist_connections": true
         },
         {
             "tag": "apple",
             "type": "selector",
             "outbounds": [
                 "direct-out",
-                "proxy",
-                "🇭🇰HK",
-                "🇼🇸TW",
-                "🇸🇬SG",
-                "🇺🇸US",
-                "🇯🇵JP",
-                "general-detour",
-                "🇭🇰HK-detour",
-                "🇼🇸TW-detour",
-                "🇸🇬SG-detour",
-                "🇺🇸US-detour",
-                "🇯🇵JP-detour",
-                "other",
-                "other-detour"
+                "proxy"
             ],
             "default": "direct-out"
-        },
-        {
-            "tag": "telegram",
-            "type": "selector",
-            "outbounds": [
-                "direct-out",
-                "proxy",
-                "🇭🇰HK",
-                "🇼🇸TW",
-                "🇸🇬SG",
-                "🇺🇸US",
-                "🇯🇵JP",
-                "general-detour",
-                "🇭🇰HK-detour",
-                "🇼🇸TW-detour",
-                "🇸🇬SG-detour",
-                "🇺🇸US-detour",
-                "🇯🇵JP-detour",
-                "other",
-                "other-detour"
-            ],
-            "default": "proxy"
         },
         {
             "tag": "bilibili",
             "type": "selector",
             "outbounds": [
                 "direct-out",
-                "proxy",
-                "🇭🇰HK",
-                "🇼🇸TW",
-                "🇸🇬SG",
-                "🇺🇸US",
-                "🇯🇵JP",
-                "general-detour",
-                "🇭🇰HK-detour",
-                "🇼🇸TW-detour",
-                "🇸🇬SG-detour",
-                "🇺🇸US-detour",
-                "🇯🇵JP-detour",
-                "other",
-                "other-detour"
+                "proxy"
             ],
             "default": "direct-out"
-        },
-        {
-            "tag": "tiktok",
-            "type": "selector",
-            "outbounds": [
-                "direct-out",
-                "proxy",
-                "🇭🇰HK",
-                "🇼🇸TW",
-                "🇸🇬SG",
-                "🇺🇸US",
-                "🇯🇵JP",
-                "general-detour",
-                "🇭🇰HK-detour",
-                "🇼🇸TW-detour",
-                "🇸🇬SG-detour",
-                "🇺🇸US-detour",
-                "🇯🇵JP-detour",
-                "other",
-                "other-detour"
-            ],
-            "default": "proxy"
         },
         {
             "tag": "microsoft",
             "type": "selector",
             "outbounds": [
                 "direct-out",
-                "proxy",
-                "🇭🇰HK",
-                "🇼🇸TW",
-                "🇸🇬SG",
-                "🇺🇸US",
-                "🇯🇵JP",
-                "general-detour",
-                "🇭🇰HK-detour",
-                "🇼🇸TW-detour",
-                "🇸🇬SG-detour",
-                "🇺🇸US-detour",
-                "🇯🇵JP-detour",
-                "other",
-                "other-detour"
-            ],
-            "default": "proxy"
-        },
-        {
-            "tag": "neteasemusic",
-            "type": "selector",
-            "outbounds": [
-                "direct-out",
-                "proxy",
-                "🇭🇰HK",
-                "🇼🇸TW",
-                "🇸🇬SG",
-                "🇺🇸US",
-                "🇯🇵JP",
-                "general-detour",
-                "🇭🇰HK-detour",
-                "🇼🇸TW-detour",
-                "🇸🇬SG-detour",
-                "🇺🇸US-detour",
-                "🇯🇵JP-detour",
-                "other",
-                "other-detour"
-            ],
-            "default": "direct-out"
-        },
-        {
-            "tag": "stream",
-            "type": "selector",
-            "outbounds": [
-                "direct-out",
-                "proxy",
-                "🇭🇰HK",
-                "🇼🇸TW",
-                "🇸🇬SG",
-                "🇺🇸US",
-                "🇯🇵JP",
-                "general-detour",
-                "🇭🇰HK-detour",
-                "🇼🇸TW-detour",
-                "🇸🇬SG-detour",
-                "🇺🇸US-detour",
-                "🇯🇵JP-detour",
-                "other",
-                "other-detour"
-            ],
-            "default": "proxy"
-        },
-        {
-            "tag": "openai",
-            "type": "selector",
-            "outbounds": [
-                "direct-out",
-                "proxy",
-                "🇭🇰HK",
-                "🇼🇸TW",
-                "🇸🇬SG",
-                "🇺🇸US",
-                "🇯🇵JP",
-                "general-detour",
-                "🇭🇰HK-detour",
-                "🇼🇸TW-detour",
-                "🇸🇬SG-detour",
-                "🇺🇸US-detour",
-                "🇯🇵JP-detour",
-                "other",
-                "other-detour"
-            ],
-            "default": "proxy"
-        },
-        {
-            "tag": "crunchyroll",
-            "type": "selector",
-            "outbounds": [
-                "direct-out",
-                "proxy",
-                "🇭🇰HK",
-                "🇼🇸TW",
-                "🇸🇬SG",
-                "🇺🇸US",
-                "🇯🇵JP",
-                "general-detour",
-                "🇭🇰HK-detour",
-                "🇼🇸TW-detour",
-                "🇸🇬SG-detour",
-                "🇺🇸US-detour",
-                "🇯🇵JP-detour",
-                "other",
-                "other-detour"
+                "proxy"
             ],
             "default": "proxy"
         },
@@ -339,124 +149,9 @@
             "type": "selector",
             "outbounds": [
                 "direct-out",
-                "proxy",
-                "🇭🇰HK",
-                "🇼🇸TW",
-                "🇸🇬SG",
-                "🇺🇸US",
-                "🇯🇵JP",
-                "general-detour",
-                "🇭🇰HK-detour",
-                "🇼🇸TW-detour",
-                "🇸🇬SG-detour",
-                "🇺🇸US-detour",
-                "🇯🇵JP-detour",
-                "other",
-                "other-detour"
+                "proxy"
             ],
             "default": "proxy"
-        },
-        {
-            "tag": "🇭🇰HK",
-            "type": "selector",
-            "interrupt_exist_connections": true,
-            "outbounds": [
-                "🇭🇰HK-detour"
-            ]
-        },
-        {
-            "tag": "🇼🇸TW",
-            "type": "selector",
-            "interrupt_exist_connections": true,
-            "outbounds": [
-                "🇼🇸TW-detour"
-            ]
-        },
-        {
-            "tag": "🇯🇵JP",
-            "type": "selector",
-            "interrupt_exist_connections": true,
-            "outbounds": [
-                "🇯🇵JP-detour"
-            ]
-        },
-        {
-            "tag": "🇸🇬SG",
-            "type": "selector",
-            "interrupt_exist_connections": true,
-            "outbounds": [
-                "🇸🇬SG-detour"
-            ]
-        },
-        {
-            "tag": "🇺🇸US",
-            "type": "selector",
-            "interrupt_exist_connections": true,
-            "outbounds": [
-                "🇺🇸US-detour"
-            ]
-        },
-        {
-            "tag": "🇭🇰HK-detour",
-            "type": "selector",
-            "outbounds": [
-                "general-detour"
-            ],
-            "interrupt_exist_connections": true,
-            "default": "general-detour"
-        },
-        {
-            "tag": "🇼🇸TW-detour",
-            "type": "selector",
-            "outbounds": [
-                "general-detour"
-            ],
-            "interrupt_exist_connections": true,
-            "default": "general-detour"
-        },
-        {
-            "tag": "🇯🇵JP-detour",
-            "type": "selector",
-            "outbounds": [
-                "general-detour"
-            ],
-            "interrupt_exist_connections": true,
-            "default": "general-detour"
-        },
-        {
-            "tag": "🇸🇬SG-detour",
-            "type": "selector",
-            "outbounds": [
-                "general-detour"
-            ],
-            "interrupt_exist_connections": true,
-            "default": "general-detour"
-        },
-        {
-            "tag": "🇺🇸US-detour",
-            "type": "selector",
-            "outbounds": [
-                "general-detour"
-            ],
-            "interrupt_exist_connections": true,
-            "default": "general-detour"
-        },
-        {
-            "tag": "other",
-            "type": "selector",
-            "interrupt_exist_connections": true,
-            "outbounds": [
-                "other-detour"
-            ]
-        },
-        {
-            "tag": "other-detour",
-            "type": "selector",
-            "outbounds": [
-                "general-detour"
-            ],
-            "interrupt_exist_connections": true,
-            "default": "general-detour"
         }
     ],
     "route": {
@@ -518,35 +213,35 @@
                 "rule_set": [
                     "crunchyroll_non_ip"
                 ],
-                "outbound": "crunchyroll"
+                "outbound": "proxy"
             },
             {
                 "action": "route",
                 "rule_set": [
                     "geosite-tiktok"
                 ],
-                "outbound": "tiktok"
+                "outbound": "proxy"
             },
             {
                 "action": "route",
                 "rule_set": [
                     "stream_non_ip"
                 ],
-                "outbound": "stream"
+                "outbound": "proxy"
             },
             {
                 "action": "route",
                 "rule_set": [
                     "ai_non_ip"
                 ],
-                "outbound": "openai"
+                "outbound": "proxy"
             },
             {
                 "action": "route",
                 "rule_set": [
                     "telegram_non_ip"
                 ],
-                "outbound": "telegram"
+                "outbound": "proxy"
             },
             {
                 "action": "route",
@@ -554,7 +249,7 @@
                     "apple_cdn",
                     "apple_cn_non_ip"
                 ],
-                "outbound": "direct-out"
+                "outbound": "apple"
             },
             {
                 "action": "route",
@@ -595,13 +290,6 @@
             {
                 "action": "route",
                 "rule_set": [
-                    "neteasemusic_non_ip"
-                ],
-                "outbound": "neteasemusic"
-            },
-            {
-                "action": "route",
-                "rule_set": [
                     "global_non_ip"
                 ],
                 "outbound": "proxy"
@@ -635,7 +323,7 @@
                     "telegram_ip"
                 ],
                 "action": "route",
-                "outbound": "telegram"
+                "outbound": "proxy"
             },
             {
                 "rule_set": [
@@ -649,14 +337,7 @@
                     "stream_ip"
                 ],
                 "action": "route",
-                "outbound": "stream"
-            },
-            {
-                "rule_set": [
-                    "neteasemusic_ip"
-                ],
-                "action": "route",
-                "outbound": "neteasemusic"
+                "outbound": "proxy"
             },
             {
                 "rule_set": [
