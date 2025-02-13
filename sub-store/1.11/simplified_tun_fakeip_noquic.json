@@ -283,14 +283,8 @@
             {
                 "action": "route",
                 "rule_set": [
-                    "global_non_ip"
-                ],
-                "outbound": "proxy"
-            },
-            {
-                "action": "route",
-                "rule_set": [
-                    "global_non_ip"
+                    "global_non_ip",
+                    "geolocation-!cn"
                 ],
                 "outbound": "proxy"
             },
@@ -299,13 +293,9 @@
                 "rule_set": [
                     "domestic_non_ip",
                     "lan_non_ip",
-                    "direct_non_ip"
+                    "direct_non_ip",
+                    "geosite-cn"
                 ],
-                "outbound": "direct-out"
-            },
-            {
-                "action": "route",
-                "rule_set": "geosite-cn",
                 "outbound": "direct-out"
             },
             {
@@ -344,6 +334,7 @@
                     "lan_ip",
                     "domestic_ip",
                     "china_ip",
+                    "china_ipv6",
                     "geoip-cn"
                 ],
                 "action": "route",
@@ -471,20 +462,6 @@
                 "download_detour": "direct-out"
             },
             {
-                "tag": "neteasemusic_non_ip",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/neteasemusic.srs",
-                "download_detour": "direct-out"
-            },
-            {
-                "tag": "neteasemusic_ip",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/neteasemusic.srs",
-                "download_detour": "direct-out"
-            },
-            {
                 "tag": "download_domainset",
                 "type": "remote",
                 "format": "binary",
@@ -545,6 +522,13 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/china_ip.srs",
+                "download_detour": "direct-out"
+            },
+            {
+                "tag": "china_ipv6",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/china_ip_ipv6.srs",
                 "download_detour": "direct-out"
             },
             {
