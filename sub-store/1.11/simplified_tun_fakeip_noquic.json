@@ -34,7 +34,7 @@
         "servers": [
             {
                 "tag": "dns_proxy",
-                "address": "h3://8.8.8.8/dns-query",
+                "address": "8.8.8.8",
                 "detour": "proxy"
             },
             {
@@ -76,21 +76,13 @@
                 "rewrite_ttl": 1
             },
             {
-                "type": "logical",
-                "mode": "and",
-                "rules": [
-                    {
-                        "rule_set": "geolocation-!cn",
-                        "invert": true
-                    },
-                    {
-                        "rule_set": "geoip-cn"
-                    }
-                ],
-                "server": "dns_direct"
+                "action": "route",
+                "rule_set": "geoip-cn",
+                "invert": true,
+                "server": "dns_proxy"
             }
         ],
-        "final": "dns_proxy"
+        "final": "dns_direct"
     },
     "inbounds": [
         {
