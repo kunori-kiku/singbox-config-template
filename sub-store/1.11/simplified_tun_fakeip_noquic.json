@@ -76,17 +76,8 @@
                 "rewrite_ttl": 1
             },
             {
-                "type": "logical",
-                "mode": "and",
-                "rules": [
-                    {
-                        "rule_set": "geolocation-!cn",
-                        "invert": true
-                    },
-                    {
-                        "rule_set": "geoip-cn"
-                    }
-                ],
+                "action": "route",
+                "rule_set": "geoip-cn",
                 "server": "dns_direct"
             }
         ],
