@@ -93,7 +93,7 @@
                 "172.19.0.1/30",
                 "fdfe:2952:8964::1/126"
             ],
-            "stack": "mixed",
+            "stack": "gvisor",
             "auto_route": true,
             "strict_route": true
         }
@@ -302,6 +302,12 @@
             },
             {
                 "rule_set": [
+                    "apple_ip"
+                ],
+                "action": "apple"
+            },
+            {
+                "rule_set": [
                     "telegram_ip"
                 ],
                 "action": "route",
@@ -430,6 +436,13 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/apple_services.srs",
+                "download_detour": "direct-out"
+            },
+            {
+                "tag": "apple_ip",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/apple_services.srs",
                 "download_detour": "direct-out"
             },
             {
