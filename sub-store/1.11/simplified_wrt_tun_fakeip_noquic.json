@@ -18,7 +18,7 @@
             "store_rdrc": false
         },
         "clash_api": {
-            "external_controller": "127.0.0.1:9090",
+            "external_controller": "10.0.0.1:9090",
             "external_ui": "dashboard",
             "external_ui_download_url": "https://gh-proxy.com/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip",
             "external_ui_download_detour": "direct-out",
@@ -94,8 +94,7 @@
                 "fdfe:2952:8964::1/126"
             ],
             "stack": "gvisor",
-            "auto_route": true,
-            "strict_route": true
+            "auto_route": true
         }
     ],
     "outbounds": [
@@ -161,6 +160,13 @@
                     }
                 ],
                 "action": "hijack-dns"
+            },
+            {
+                "network": "udp",
+                "ip_cidr": "223.5.5.5/32",
+                "port": 443,
+                "action": "route",
+                "outbound": "direct-out"
             },
             {
                 "network": "udp",
