@@ -46,6 +46,14 @@ def main():
     if sub_type != "no_endpoint":
         endpoints = fetch(ENDPOINTS)
         sub["endpoints"] = endpoints["endpoints"]
+    try:
+        with open(f"{CONFIG_PATH}_transitional", "r", encoding="utf-8") as f:
+            old_sub = json.load(f)
+    except FileNotFoundError:
+        old_sub = {}
+    if sub == old_sub:
+        print("No changes to configuration")
+        sys.exit(0)
     with open(f"{CONFIG_PATH}_transitional", "w", encoding="utf-8") as f:
         json.dump(sub, f)
 
@@ -54,5 +62,5 @@ if __name__ == "__main__":
     if not subprocess.check_output([SING_BOX_PATH, "check", "-c", f"{CONFIG_PATH}_transitional"]):
         print("Invalid configuration")
         sys.exit(1)
-    subprocess.run(["mv", f"{CONFIG_PATH}_transitional", CONFIG_PATH], check=True)
+    subprocess.run(["cp", f"{CONFIG_PATH}_transitional", CONFIG_PATH], check=True)
     subprocess.run([SING_BOX_PATH, "restart"], check=True)
