@@ -27,6 +27,7 @@ import requests
 
 SUB="https://your.subscription.url"
 ENDPOINT="https://your.endpoint.url"
+CONFIG_PATH="/etc/sing-box/config.json"
 
 
 def fetch(url):
@@ -43,7 +44,7 @@ def main():
     if sub_type != "no_endpoint":
         endpoint = fetch(ENDPOINT)
         sub["endpoint"] = endpoint
-    with open("config.json", "w", encoding="utf-8") as f:
+    with open(CONFIG_PATH, "w", encoding="utf-8") as f:
         json.dump(sub, f)
 
 if __name__ == "__main__":
