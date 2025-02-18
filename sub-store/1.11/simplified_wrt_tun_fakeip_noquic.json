@@ -18,7 +18,7 @@
             "store_rdrc": false
         },
         "clash_api": {
-            "external_controller": "10.0.0.1:9090",
+            "external_controller": "10.0.0.1:8888",
             "external_ui": "dashboard",
             "external_ui_download_url": "https://gh-proxy.com/https://github.com/Zephyruso/zashboard/releases/latest/download/dist.zip",
             "external_ui_download_detour": "direct-out",
@@ -77,7 +77,10 @@
             },
             {
                 "action": "route",
-                "rule_set": "geoip-cn",
+                "rule_set": [
+                    "geoip-cn",
+                    "lan_ip"
+                ],
                 "invert": true,
                 "server": "dns_proxy"
             }
@@ -91,9 +94,9 @@
             "interface_name": "singbox",
             "address": [
                 "172.19.0.1/30",
-                "fdfe:2952:8964::1/126"
+                "fdfe:1913:8888::1/126"
             ],
-            "stack": "gvisor",
+            "stack": "mixed",
             "auto_route": true
         }
     ],
@@ -187,7 +190,8 @@
                 "rule_set": [
                     "reject_non_ip",
                     "reject_non_ip_no_drop",
-                    "reject_domainset"
+                    "reject_domainset",
+                    "reject_supplement"
                 ],
                 "action": "reject"
             },
@@ -373,6 +377,13 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/reject.srs",
+                "download_detour": "direct-out"
+            },
+            {
+                "tag": "reject_supplement",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/reject.srs",
                 "download_detour": "direct-out"
             },
             {

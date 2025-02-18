@@ -93,7 +93,7 @@
                 "172.19.0.1/30",
                 "fdfe:2952:8964::1/126"
             ],
-            "stack": "gvisor",
+            "stack": "mixed",
             "auto_route": true,
             "strict_route": true
         }
@@ -181,7 +181,8 @@
                 "rule_set": [
                     "reject_non_ip",
                     "reject_non_ip_no_drop",
-                    "reject_domainset"
+                    "reject_domainset",
+                    "reject_supplement"
                 ],
                 "action": "reject"
             },
@@ -367,6 +368,13 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/reject.srs",
+                "download_detour": "direct-out"
+            },
+            {
+                "tag": "reject_supplement",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/reject.srs",
                 "download_detour": "direct-out"
             },
             {
