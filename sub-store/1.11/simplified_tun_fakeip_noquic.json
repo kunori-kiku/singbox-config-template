@@ -156,7 +156,6 @@
                         "protocol": "dns"
                     },
                     {
-                        "network": "udp",
                         "port": 53
                     }
                 ],
@@ -257,7 +256,7 @@
                     "download_domainset",
                     "download_non_ip"
                 ],
-                "outbound": "proxy"
+                "outbound": "direct-out"
             },
             {
                 "action": "route",

@@ -23,7 +23,7 @@ Usage:
 
 import json
 import sys
-import os
+import subprocess
 import requests
 
 SUB="https://your.subscription.url"
@@ -46,9 +46,13 @@ def main():
     if sub_type != "no_endpoint":
         endpoints = fetch(ENDPOINTS)
         sub["endpoints"] = endpoints["endpoints"]
-    with open(CONFIG_PATH, "w", encoding="utf-8") as f:
+    with open(f"{CONFIG_PATH}_transitional", "w", encoding="utf-8") as f:
         json.dump(sub, f)
 
 if __name__ == "__main__":
     main()
-    os.system(f"{SING_BOX_PATH} restart")
+    if not subprocess.check_output([SING_BOX_PATH, "check", "-c", f"{CONFIG_PATH}_transitional"]):
+        print("Invalid configuration")
+        sys.exit(1)
+    subprocess.run(["mv", f"{CONFIG_PATH}_transitional", CONFIG_PATH], check=True)
+    subprocess.run([SING_BOX_PATH, "restart"], check=True)
