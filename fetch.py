@@ -27,7 +27,7 @@ import os
 import requests
 
 SUB="https://your.subscription.url"
-ENDPOINT="https://your.endpoint.url"
+ENDPOINTS="https://your.endpoint.url"
 CONFIG_PATH="/etc/sing-box/config.json"
 SING_BOX_PATH="/etc/init.d/sing-box"
 
@@ -44,8 +44,8 @@ def main():
     sub_type = sys.argv[1]
     sub = fetch(SUB)
     if sub_type != "no_endpoint":
-        endpoint = fetch(ENDPOINT)
-        sub["endpoint"] = endpoint
+        endpoints = fetch(ENDPOINTS)
+        sub["endpoints"] = endpoints["endpoints"]
     with open(CONFIG_PATH, "w", encoding="utf-8") as f:
         json.dump(sub, f)
 
