@@ -23,11 +23,13 @@ Usage:
 
 import json
 import sys
+import os
 import requests
 
 SUB="https://your.subscription.url"
 ENDPOINT="https://your.endpoint.url"
 CONFIG_PATH="/etc/sing-box/config.json"
+SING_BOX_PATH="/etc/init.d/sing-box"
 
 
 def fetch(url):
@@ -49,3 +51,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    os.system(f"{SING_BOX_PATH} restart")
