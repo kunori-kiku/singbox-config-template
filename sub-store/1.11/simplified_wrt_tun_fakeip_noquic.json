@@ -168,13 +168,6 @@
             },
             {
                 "network": "udp",
-                "ip_cidr": "223.5.5.5/32",
-                "port": 443,
-                "action": "route",
-                "outbound": "direct-out"
-            },
-            {
-                "network": "udp",
                 "port": 443,
                 "action": "reject"
             },
