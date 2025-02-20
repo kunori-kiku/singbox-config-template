@@ -77,12 +77,14 @@
             },
             {
                 "action": "route",
-                "rule_set": "geoip-cn",
-                "invert": true,
-                "server": "dns_proxy"
+                "rule_set": [
+                    "geoip-cn",
+                    "lan_ip"
+                ],
+                "server": "dns_direct"
             }
         ],
-        "final": "dns_direct"
+        "final": "dns_proxy"
     },
     "inbounds": [
         {
