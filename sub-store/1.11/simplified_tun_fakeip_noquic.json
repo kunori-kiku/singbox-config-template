@@ -35,7 +35,8 @@
             {
                 "tag": "dns_proxy",
                 "address": "8.8.8.8",
-                "detour": "proxy"
+                "detour": "proxy",
+                "strategy": "ipv4_only"
             },
             {
                 "tag": "dns_direct",
@@ -78,6 +79,9 @@
             {
                 "action": "route",
                 "rule_set": [
+                    "domestic_ip",
+                    "china_ip",
+                    "china_ipv6",
                     "geoip-cn",
                     "lan_ip"
                 ],
@@ -293,8 +297,7 @@
                 "outbound": "direct-out"
             },
             {
-                "action": "resolve",
-                "strategy": "ipv4_only"
+                "action": "resolve"
             },
             {
                 "rule_set": [
@@ -332,11 +335,11 @@
             },
             {
                 "rule_set": [
-                    "lan_ip",
                     "domestic_ip",
                     "china_ip",
                     "china_ipv6",
-                    "geoip-cn"
+                    "geoip-cn",
+                    "lan_ip"
                 ],
                 "action": "route",
                 "outbound": "direct-out"
