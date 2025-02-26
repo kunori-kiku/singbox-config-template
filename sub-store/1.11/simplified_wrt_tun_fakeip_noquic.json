@@ -39,7 +39,7 @@
             },
             {
                 "tag": "dns_direct",
-                "address": "223.5.5.5",
+                "address": "local",
                 "detour": "direct-out"
             },
             {
