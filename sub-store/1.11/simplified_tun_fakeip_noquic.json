@@ -35,8 +35,7 @@
             {
                 "tag": "dns_proxy",
                 "address": "8.8.8.8",
-                "detour": "proxy",
-                "strategy": "ipv4_only"
+                "detour": "proxy"
             },
             {
                 "tag": "dns_direct",
@@ -80,8 +79,6 @@
                 "action": "route",
                 "rule_set": [
                     "domestic_ip",
-                    "china_ip",
-                    "china_ipv6",
                     "geoip-cn",
                     "lan_ip"
                 ],
@@ -336,8 +333,6 @@
             {
                 "rule_set": [
                     "domestic_ip",
-                    "china_ip",
-                    "china_ipv6",
                     "geoip-cn",
                     "lan_ip"
                 ],
@@ -533,20 +528,6 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/domestic.srs",
-                "download_detour": "direct-out"
-            },
-            {
-                "tag": "china_ip",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/china_ip.srs",
-                "download_detour": "direct-out"
-            },
-            {
-                "tag": "china_ipv6",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/china_ip_ipv6.srs",
                 "download_detour": "direct-out"
             },
             {
