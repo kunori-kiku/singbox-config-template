@@ -73,7 +73,7 @@
                     "AAAA"
                 ],
                 "server": "fakeip",
-                "rewrite_ttl": 1
+                "rewrite_ttl": 120
             },
             {
                 "action": "route",
