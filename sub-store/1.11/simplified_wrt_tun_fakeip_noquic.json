@@ -53,18 +53,8 @@
                 "server": "dns_direct"
             },
             {
-                "action": "route",
-                "clash_mode": "direct",
-                "server": "dns_direct"
-            },
-            {
                 "action": "reject",
                 "query_type": "HTTPS"
-            },
-            {
-                "action": "route",
-                "clash_mode": "global",
-                "server": "fakeip"
             },
             {
                 "action": "route",
