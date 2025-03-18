@@ -40,7 +40,7 @@
             {
                 "tag": "dns-proxy",
                 "address": "https://1.1.1.1/dns-query",
-                "detour": "proxy-other"
+                "detour": "proxy-others"
             },
             {
                 "tag": "dns-cn",
@@ -111,13 +111,41 @@
             "strict_route": true
         }
     ],
+    "endpoints": [
+        {
+            "type": "wireguard",
+            "tag": "warp",
+            "mtu": 1280,
+            "address": [
+                "172.16.0.2/32",
+                "2606:6666::/128"
+            ],
+            "private_key": "isQVHt2eaSBEVS1VfbXhYmW7OR9qcFpZLgSkhyQHii4=",
+            "peers": [
+                {
+                    "address": "engage.cloudflareclient.com",
+                    "port": 2408,
+                    "public_key": "isQVHt2eaSBEVS1VfbXhYmW7OR9qcFpZLgSkhyQHii4=",
+                    "allowed_ips": [
+                        "0.0.0.0/0",
+                        "::/0"
+                    ],
+                    "reserved": [
+                        19,
+                        89,
+                        64
+                    ]
+                }
+            ]
+        }
+    ],
     "outbounds": [
         {
             "tag": "direct-out",
             "type": "direct"
         },
         {
-            "tag": "proxy-other",
+            "tag": "proxy-others",
             "type": "selector",
             "outbounds": [
                 "direct-out",
@@ -170,20 +198,20 @@
             },
             {
                 "rule_set": [
-                    "reject_ip"
+                    "reject-ip"
                 ],
                 "action": "reject"
             },
             {
                 "rule_set": [
-                    "domestic_ip",
+                    "domestic-ip",
                     "geoip-cn"
                 ],
                 "action": "route",
                 "outbound": "proxy-cn"
             },
             {
-                "rule_set": "lan_ip",
+                "rule_set": "lan-ip",
                 "action": "route",
                 "outbound": "direct-out"
             }
@@ -225,28 +253,21 @@
                 "download_detour": "direct-out"
             },
             {
-                "tag": "reject_ip",
+                "tag": "reject-ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/reject.srs",
                 "download_detour": "direct-out"
             },
             {
-                "tag": "lan_non_ip",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/lan.srs",
-                "download_detour": "direct-out"
-            },
-            {
-                "tag": "lan_ip",
+                "tag": "lan-ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/lan.srs",
                 "download_detour": "direct-out"
             },
             {
-                "tag": "domestic_ip",
+                "tag": "domestic-ip",
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/domestic.srs",
@@ -261,6 +282,6 @@
             }
         ],
         "auto_detect_interface": true,
-        "final": "proxy-other"
+        "final": "proxy-others"
     }
 }
