@@ -1,4 +1,4 @@
-const { type, name } = $arguments
+const { type, sub_name, endpoint_name } = $arguments
 const compatible_outbound = {
   tag: 'COMPATIBLE',
   type: 'direct',
@@ -7,26 +7,42 @@ const compatible_outbound = {
 let compatible
 let config = JSON.parse($files[0])
 let proxies = await produceArtifact({
-  name,
+  sub_name,
   type: /^1$|col/i.test(type) ? 'collection' : 'subscription',
   platform: 'sing-box',
   produceType: 'internal',
 })
+
+let endpoints_file = await produceArtifact({
+  endpoint_name,
+  type: 'file',
+})
+let endpoints = JSON.parse(endpoints_file).endpoints
 
 proxies.forEach(proxy => {
   if (/.*(warped).*/.test(proxy.tag)) {
     proxy.detour = "warp";
   }
 });
+endpoints.forEach(endpoint => {
+  if (/.*(warped).*/.test(endpoint.tag)) {
+    endpoint.detour = "warp";
+  }
+});
 
 config.outbounds.push(...proxies)
+config.endpoints.push(...endpoints)
 
 config.outbounds.map(i => {
   if (['proxy-cn'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /.*(warped).*/))
+    i.outbounds.push(...getTags(endpoints, /warp/))
+    i.outbounds.push(...getTags(proxies, /^(🇨🇳|CN|🇭🇰|HK).*/i))
+    i.outbounds.push(...getTags(endpoints, /^(🇨🇳|CN|🇭🇰|HK).*/i))
   }
   if (['proxy-others'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /^(?!.*(?:warped))/))
+    i.outbounds.push(...getTags(endpoints, /warp/))
+    i.outbounds.push(...getTags(proxies, /^(?!.*(?:🇨🇳|CN))/))
+    i.outbounds.push(...getTags(endpoints, /^(?!.*(?:🇨🇳|CN))/))
   }
 })
 

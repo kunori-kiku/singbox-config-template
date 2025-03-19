@@ -80,19 +80,6 @@
                 "action": "route",
                 "clash_mode": "global",
                 "server": "dns-cn"
-            },
-            {
-                "action": "route",
-                "server": "dns-proxy",
-                "invert": true,
-                "rule_set": [
-                    "geoip-cn"
-                ]
-            },
-            {
-                "action": "route",
-                "clash_mode": "rule",
-                "server": "dns-cn"
             }
         ],
         "final": "dns-proxy"
@@ -111,34 +98,6 @@
             "strict_route": true
         }
     ],
-    "endpoints": [
-        {
-            "type": "wireguard",
-            "tag": "warp",
-            "mtu": 1280,
-            "address": [
-                "172.16.0.2/32",
-                "2606:6666::/128"
-            ],
-            "private_key": "isQVHt2eaSBEVS1VfbXhYmW7OR9qcFpZLgSkhyQHii4=",
-            "peers": [
-                {
-                    "address": "engage.cloudflareclient.com",
-                    "port": 2408,
-                    "public_key": "isQVHt2eaSBEVS1VfbXhYmW7OR9qcFpZLgSkhyQHii4=",
-                    "allowed_ips": [
-                        "0.0.0.0/0",
-                        "::/0"
-                    ],
-                    "reserved": [
-                        19,
-                        89,
-                        64
-                    ]
-                }
-            ]
-        }
-    ],
     "outbounds": [
         {
             "tag": "direct-out",
@@ -148,8 +107,6 @@
             "tag": "proxy-others",
             "type": "selector",
             "outbounds": [
-                "direct-out",
-                "warp"
             ]
         },
         {
@@ -197,16 +154,11 @@
                 "action": "resolve"
             },
             {
-                "rule_set": [
-                    "reject-ip"
-                ],
+                "rule_set": "reject-ip",
                 "action": "reject"
             },
             {
-                "rule_set": [
-                    "domestic-ip",
-                    "geoip-cn"
-                ],
+                "rule_set": "geoip-cn",
                 "action": "route",
                 "outbound": "proxy-cn"
             },
@@ -264,13 +216,6 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/lan.srs",
-                "download_detour": "direct-out"
-            },
-            {
-                "tag": "domestic-ip",
-                "type": "remote",
-                "format": "binary",
-                "url": "https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/domestic.srs",
                 "download_detour": "direct-out"
             },
             {
