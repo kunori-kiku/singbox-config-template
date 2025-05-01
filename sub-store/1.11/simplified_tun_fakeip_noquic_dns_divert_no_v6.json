@@ -98,8 +98,7 @@
             {
                 "action": "route",
                 "query_type": [
-                    "A",
-                    "AAAA"
+                    "A"
                 ],
                 "server": "fakeip",
                 "rewrite_ttl": 1
