@@ -97,11 +97,6 @@
             },
             {
                 "action": "route",
-                "server": "fakeip",
-                "rewrite_ttl": 1
-            },
-            {
-                "action": "route",
                 "rule_set": [
                     "domestic_ip",
                     "geoip-cn",
