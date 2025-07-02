@@ -97,21 +97,18 @@
             },
             {
                 "action": "route",
+                "rule_set": [
+                    "domestic_ip",
+                    "geoip-cn",
+                    "lan_ip"
+                ],
                 "query_type": [
                     "A",
                     "AAAA"
                 ],
+                "invert": true,
                 "server": "fakeip",
                 "rewrite_ttl": 1
-            },
-            {
-                "action": "route",
-                "rule_set": [
-                    "domestic_ip",
-                    "geoip-cn"
-                ],
-                "invert": true,
-                "server": "fakeip"
             }
         ],
         "final": "dns_direct"

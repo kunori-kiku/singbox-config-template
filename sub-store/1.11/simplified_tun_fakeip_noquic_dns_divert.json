@@ -97,10 +97,6 @@
             },
             {
                 "action": "route",
-                "query_type": [
-                    "A",
-                    "AAAA"
-                ],
                 "server": "fakeip",
                 "rewrite_ttl": 1
             },
@@ -108,10 +104,16 @@
                 "action": "route",
                 "rule_set": [
                     "domestic_ip",
-                    "geoip-cn"
+                    "geoip-cn",
+                    "lan_ip"
+                ],
+                "query_type": [
+                    "A",
+                    "AAAA"
                 ],
                 "invert": true,
-                "server": "fakeip"
+                "server": "fakeip",
+                "rewrite_ttl": 1
             }
         ],
         "final": "dns_direct"
