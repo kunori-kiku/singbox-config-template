@@ -40,9 +40,19 @@ if (noV6) {
   // 2. Set default domain resolver strategy to ipv4_only
   config.route.default_domain_resolver.strategy = "ipv4_only";
 
-  // 3. Add IPv6 reject rule to route.rules after the entry with "domain_regex"
-  const regexIndex = config.route.rules.findIndex(rule => rule.domain_regex);
-  config.route.rules.splice(regexIndex + 1, 0, { "ip_version": 6, "action": "reject" });
+  // 3. Add IPv6 reject rule after the specific proxy regex rule
+  // We look for the exact object structure provided
+  const targetIndex = config.route.rules.findIndex(r => 
+    r.action === 'route' && 
+    r.domain_regex === '.' && 
+    r.outbound === 'proxy'
+  );
+  
+  // Insert the new rule after the found index
+  config.route.rules.splice(targetIndex + 1, 0, { 
+    "ip_version": 6, 
+    "action": "reject" 
+  });
 }
 
 // === Logic for no_reject ===
