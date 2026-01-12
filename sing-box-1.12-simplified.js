@@ -60,10 +60,17 @@ if (noReject) {
     return !isTarget; // Keep rule if it is NOT the target
   });
 
-  // 2. Filter out Route rules with action="reject" and NO "network" property
+  // 2. Filter out Route rules with action="reject" that do NOT specify network OR ip_version
+  // "Without specifying network or ip_version" -> Missing network AND Missing ip_version
   config.route.rules = config.route.rules.filter(rule => {
-    const shouldRemove = rule.action === 'reject' && rule.network === undefined;
-    return !shouldRemove; // Keep rule if it should not be removed
+    const isReject = rule.action === 'reject';
+    const hasNoNetwork = rule.network === undefined;
+    const hasNoIpVersion = rule.ip_version === undefined;
+
+    // Remove if it is a reject rule AND it lacks both network and ip_version constraints
+    const shouldRemove = isReject && hasNoNetwork && hasNoIpVersion;
+    
+    return !shouldRemove;
   });
 }
 
