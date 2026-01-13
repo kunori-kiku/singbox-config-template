@@ -62,7 +62,7 @@ You can customize the configuration by adding URL parameters to the script URL. 
 | `name` | string | **Required**. Your subscription name | Must match the node name you created |
 | `no_v6` | `true` | Disable IPv6 | 1. Reject AAAA DNS queries<br>2. Set DNS strategy to `ipv4_only`<br>3. Reject IPv6 traffic in routing rules |
 | `no_reject` | `true` | Disable ad blocking | 1. Remove ad-block DNS rules (fakeip reject rules)<br>2. Remove reject routing rules without network/ip_version constraints |
-| `no_doh` | `true` | Disable DNS over HTTPS | 1. Change `route.default_domain_resolver.server` from `dns_direct` to `dns_local`<br>2. Change all DNS rules with `dns_direct` to `dns_local` |
+| `no_doh` | `true` | Disable DNS over HTTPS | 1. Change `route.default_domain_resolver.server` from `dns_direct` to `dns_local`<br>2. Change all DNS rules with `dns_direct` to `dns_local`<br>3. Change `dns.final` from `dns_direct` to `dns_local` |
 
 #### Usage Examples:
 

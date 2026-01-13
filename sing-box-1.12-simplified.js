@@ -98,6 +98,11 @@ if (noDoh) {
       rule.server = 'dns_local';
     }
   });
+
+  // 3. Change DNS final server from "dns_direct" to "dns_local"
+  if (config.dns?.final === 'dns_direct') {
+    config.dns.final = 'dns_local';
+  }
 }
 
 // Serialize the modified config object back to a JSON string for the final output
