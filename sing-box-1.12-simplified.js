@@ -7,7 +7,8 @@ const params = $options?._req?.query || {};
 
 // Extract specific parameters and convert them to boolean flags
 const noV6 = params.no_v6 === 'true'; 
-const noReject = params.no_reject === 'true'; 
+const noReject = params.no_reject === 'true';
+const noDoh = params.no_doh === 'true'; 
 
 // Parse the template file content (usually passed as the first file in the arguments)
 let config = JSON.parse($files[0])
@@ -82,6 +83,26 @@ if (noReject) {
     
     return !shouldRemove;
   });
+}
+
+// === Logic for no_doh ===
+if (noDoh) {
+  // 1. Change default domain resolver server from "dns_direct" to "dns_local"
+  if (config.route?.default_domain_resolver?.server === 'dns_direct') {
+    config.route.default_domain_resolver.server = 'dns_local';
+  }
+
+  // 2. Iterate through all DNS rules and change "dns_direct" to "dns_local"
+  config.dns.rules.forEach(rule => {
+    if (rule.server === 'dns_direct') {
+      rule.server = 'dns_local';
+    }
+  });
+
+  // 3. Change DNS final server from "dns_direct" to "dns_local"
+  if (config.dns?.final === 'dns_direct') {
+    config.dns.final = 'dns_local';
+  }
 }
 
 // Serialize the modified config object back to a JSON string for the final output
