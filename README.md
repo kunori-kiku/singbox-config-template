@@ -20,7 +20,7 @@ This repository uses MIT license.
 - **(Core)** Provides with routing rules in transparent-proxy (TUN) mode, including fakeip and realip mode
 - **(Core)** Supports fakeip on-demand dns resolving, i.e. any domain that fails to match routing rules will be resolved and matched according to IP rules
 - **Completely resolved DNS leakage issue**, i.e. a ready-to-use anti-DNS-leak package, and it will not affect the speed of proxy
-- Mannually maintained Github-proxy URL, in case the proxy-rule sites get censored
+- Manually maintained Github-proxy URL, in case the proxy-rule sites get censored
 - **URL Parameters Support**: Customize configuration behavior via URL query parameters
 
 # Usage
