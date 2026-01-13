@@ -87,7 +87,12 @@ if (noReject) {
 
 // === Logic for no_doh ===
 if (noDoh) {
-  // Iterate through all DNS rules and change "dns_direct" to "dns_local"
+  // 1. Change default domain resolver server from "dns_direct" to "dns_local"
+  if (config.route?.default_domain_resolver?.server === 'dns_direct') {
+    config.route.default_domain_resolver.server = 'dns_local';
+  }
+
+  // 2. Iterate through all DNS rules and change "dns_direct" to "dns_local"
   config.dns.rules.forEach(rule => {
     if (rule.server === 'dns_direct') {
       rule.server = 'dns_local';
