@@ -124,6 +124,15 @@ You can customize the configuration by adding URL parameters to the script URL. 
   - In `stream`, change to `HK`
   - In `HK`, change to `HK-HKT`
 
+## OpenWrt Deployment (1.12+)
+
+Files located in `sub-store/1.12/wrt/` are tailored for OpenWrt routers:
+
+- **Template**: `tun-fakeip-noquic.json` – Minimized configuration for router resources.
+- **Config**: `config/` – Includes UCI configuration (`/etc/config/sing-box`) and firewall integration.
+- **Nftables**: `nftables/` – Specialized rules for transparent proxying (TProxy/TUN) and DNS redirection.
+- **Scripts**: `scripts/` – Service management (`init.d`) and maintenance tools (like config auto-update).
+
 ---
 
 ## Legacy Templates (DEPRECATED)
