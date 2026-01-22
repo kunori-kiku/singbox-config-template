@@ -1,0 +1,3 @@
+# /etc/nftables.user.nft
+
+include "/etc/nftables.user.d/*.nft"

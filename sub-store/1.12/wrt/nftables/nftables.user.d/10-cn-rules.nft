@@ -1,0 +1,3 @@
+table inet user {
+    include "/etc/nftables.user.d/cn-rules/*.nft"
+}

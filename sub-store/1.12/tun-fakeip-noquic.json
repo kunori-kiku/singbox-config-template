@@ -97,7 +97,9 @@
           "geolocation-!cn",
           "microsoft_cdn_non_ip",
           "download_domainset",
-          "download_non_ip"
+          "download_non_ip",
+          "game-download",
+          "apple-intelligence"
         ],
         "server": "fakeip",
         "rewrite_ttl": 1,
@@ -156,8 +158,7 @@
     {
       "tag": "proxy",
       "type": "selector",
-      "outbounds": [
-      ]
+      "outbounds": []
     },
     {
       "tag": "apple",
@@ -202,11 +203,7 @@
     },
     "rules": [
       {
-        "action": "sniff",
-        "sniffer": "dns"
-      },
-      {
-        "protocol": "dns",
+        "port": 53,
         "action": "hijack-dns"
       },
       {
@@ -239,6 +236,13 @@
       {
         "action": "route",
         "rule_set": [
+          "apple-intelligence"
+        ],
+        "outbound": "proxy"
+      },
+      {
+        "action": "route",
+        "rule_set": [
           "apple_cdn",
           "apple_cn_non_ip"
         ],
@@ -255,7 +259,8 @@
         "action": "route",
         "rule_set": [
           "download_domainset",
-          "download_non_ip"
+          "download_non_ip",
+          "game-download"
         ],
         "outbound": "direct-out"
       },
@@ -384,10 +389,17 @@
         "download_detour": "direct-out"
       },
       {
+        "tag": "cdn_ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/cdn.srs",
+        "download_detour": "direct-out"
+      },
+      {
         "tag": "stream_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/stream.srs",
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/stream.srs",
         "download_detour": "direct-out"
       },
       {
@@ -415,7 +427,7 @@
         "tag": "apple_services",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/apple_services.srs",
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/apple_services.srs",
         "download_detour": "direct-out"
       },
       {
@@ -430,6 +442,13 @@
         "type": "remote",
         "format": "binary",
         "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/apple_cn.srs",
+        "download_detour": "direct-out"
+      },
+      {
+        "tag": "apple-intelligence",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/refs/heads/main/non_ip/apple_intelligence.srs",
         "download_detour": "direct-out"
       },
       {
@@ -458,6 +477,20 @@
         "type": "remote",
         "format": "binary",
         "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/download.srs",
+        "download_detour": "direct-out"
+      },
+      {
+        "tag": "download_ip",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/download.srs",
+        "download_detour": "direct-out"
+      },
+      {
+        "tag": "game-download",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/game-download.srs",
         "download_detour": "direct-out"
       },
       {
