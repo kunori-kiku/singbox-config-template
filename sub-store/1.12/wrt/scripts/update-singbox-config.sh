@@ -25,13 +25,13 @@ echo "$(date): Starting update..."
 # Try curl first, then wget
 if command -v curl >/dev/null 2>&1; then
     if ! curl -sL -o "$TEMP_FILE" "$URL"; then
-         echo "$(date): Error: Download failed (curl)."
-         exit 1
+        echo "$(date): Error: Download failed (curl)."
+        exit 1
     fi
 elif command -v wget >/dev/null 2>&1; then
     if ! wget -qO "$TEMP_FILE" "$URL"; then
-         echo "$(date): Error: Download failed (wget)."
-         exit 1
+        echo "$(date): Error: Download failed (wget)."
+        exit 1
     fi
 else
     echo "$(date): Error: Neither curl nor wget found."

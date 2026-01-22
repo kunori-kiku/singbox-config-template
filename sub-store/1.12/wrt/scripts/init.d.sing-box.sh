@@ -14,22 +14,22 @@ PR_PRIO="100"
 PR_DEV="tun0"
 
 add_pr() {
-        # only add if tun exists (avoid adding a dead route)
-        ip link show "$PR_DEV" >/dev/null 2>&1 || return 0
+	# only add if tun exists (avoid adding a dead route)
+	ip link show "$PR_DEV" >/dev/null 2>&1 || return 0
 
-        ip rule show | grep -q "fwmark $PR_MARK lookup $PR_TABLE" || \
-                ip rule add fwmark "$PR_MARK" lookup "$PR_TABLE" priority "$PR_PRIO"
+	ip rule show | grep -q "fwmark $PR_MARK lookup $PR_TABLE" || \
+		ip rule add fwmark "$PR_MARK" lookup "$PR_TABLE" priority "$PR_PRIO"
 
-        ip route show table "$PR_TABLE" | grep -q "^default dev $PR_DEV" || \
-                ip route add default dev "$PR_DEV" table "$PR_TABLE"
+	ip route show table "$PR_TABLE" | grep -q "^default dev $PR_DEV" || \
+		ip route add default dev "$PR_DEV" table "$PR_TABLE"
 }
 
 del_pr() {
-        # delete all matching rules (idempotent)
-        while ip rule show | grep -q "fwmark $PR_MARK lookup $PR_TABLE"; do
-                ip rule del fwmark "$PR_MARK" lookup "$PR_TABLE"
-        done
-        ip route flush table "$PR_TABLE" >/dev/null 2>&1 || true
+	# delete all matching rules (idempotent)
+	while ip rule show | grep -q "fwmark $PR_MARK lookup $PR_TABLE"; do
+		ip rule del fwmark "$PR_MARK" lookup "$PR_TABLE"
+	done
+	ip route flush table "$PR_TABLE" >/dev/null 2>&1 || true
 }
 
 start_service() {
