@@ -1,0 +1,10 @@
+# LAN DNS hijack -> local mosdns
+
+table inet user {
+  chain dns_redirect_prerouting {
+    type nat hook prerouting priority dstnat; policy accept;
+
+    iifname "br-lan" udp dport 53 redirect to :5454 comment "DNS(UDP) -> mosdns:5454"
+    iifname "br-lan" tcp dport 53 redirect to :5454 comment "DNS(TCP) -> mosdns:5454"
+  }
+}

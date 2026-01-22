@@ -1,0 +1,35 @@
+# Mark selected LAN->? traffic to policy-route into tun0 (table 100)
+# Requires:
+#   ip  rule add fwmark 0x1 lookup 100
+#   ip -6 rule add fwmark 0x1 lookup 100
+#   ip  route add default dev tun0 table 100
+#   ip -6 route add default dev tun0 table 100
+
+table inet user {
+  chain tun_mark_prerouting {
+    type filter hook prerouting priority mangle; policy accept;
+
+    ct mark set meta mark
+
+    # 0) only mark from LAN
+    iifname != "br-lan" return
+
+    # 1) DNS no mark: handled by dstnat redirect (avoid DNS going into tun)
+    udp dport 53 return
+    tcp dport 53 return
+
+    # 2) CN direct: no tun if matched
+    ip  daddr @cn4 return
+    ip6 daddr @cn6 return
+
+    # 3) LAN/control plane destinations: never tun
+    ip  daddr { 127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } return
+    ip6 daddr { ::1/128, fe80::/10, ff00::/8, fc00::/7 } return
+
+    # (More hardcore "exclude router's own addresses" option)
+    # fib daddr type local return
+
+    # 4) Remaining traffic marked -> policy route into tun0
+    ct mark set 0x1 comment "ct mark=0x1 -> route table 100 -> tun0"
+    meta mark set ct mark
+  }
