@@ -119,6 +119,18 @@
       },
       {
         "action": "route",
+        "domain_suffix": [
+          "pool.ntp.org"
+        ],
+        "rewrite_ttl": 1,
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "server": "fakeip"
+      },
+      {
+        "action": "route",
         "rule_set": [
           "domestic_ip",
           "geoip-cn"
@@ -284,6 +296,13 @@
         ],
         "action": "route",
         "outbound": "bilibili"
+      },
+      {
+        "domain_suffix": [
+          "pool.ntp.org"
+        ],
+        "action": "route",
+        "outbound": "direct-out"
       },
       {
         "domain_regex": ".",
