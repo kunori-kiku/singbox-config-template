@@ -29,7 +29,7 @@
       {
         "tag": "dns_direct",
         "server": "223.5.5.5",
-        "type": "h3"
+        "type": "quic"
       },
       {
         "tag": "fakeip",
