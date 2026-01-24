@@ -99,7 +99,8 @@
           "download_domainset",
           "download_non_ip",
           "game-download",
-          "apple-intelligence"
+          "apple-intelligence",
+          "icloud-private-relay"
         ],
         "server": "fakeip",
         "rewrite_ttl": 1,
@@ -116,18 +117,6 @@
           "A",
           "AAAA"
         ]
-      },
-      {
-        "action": "route",
-        "domain_suffix": [
-          "pool.ntp.org"
-        ],
-        "rewrite_ttl": 1,
-        "query_type": [
-          "A",
-          "AAAA"
-        ],
-        "server": "fakeip"
       },
       {
         "action": "route",
@@ -182,6 +171,15 @@
       "default": "direct-out"
     },
     {
+      "tag": "intl_apple",
+      "type": "selector",
+      "outbounds": [
+        "direct-out",
+        "proxy"
+      ],
+      "default": "proxy"
+    },
+    {
       "tag": "bilibili",
       "type": "selector",
       "outbounds": [
@@ -219,6 +217,17 @@
         "action": "hijack-dns"
       },
       {
+        "port": 123,
+        "network": "udp",
+        "action": "sniff",
+        "sniffer": "ntp"
+      },
+      {
+        "protocol": "ntp",
+        "action": "route",
+        "outbound": "direct-out"
+      },
+      {
         "clash_mode": "direct",
         "action": "route",
         "outbound": "direct-out"
@@ -248,9 +257,10 @@
       {
         "action": "route",
         "rule_set": [
-          "apple-intelligence"
+          "apple-intelligence",
+          "icloud-private-relay"
         ],
-        "outbound": "proxy"
+        "outbound": "intl_apple"
       },
       {
         "action": "route",
@@ -296,13 +306,6 @@
         ],
         "action": "route",
         "outbound": "bilibili"
-      },
-      {
-        "domain_suffix": [
-          "pool.ntp.org"
-        ],
-        "action": "route",
-        "outbound": "direct-out"
       },
       {
         "domain_regex": ".",
@@ -468,6 +471,13 @@
         "type": "remote",
         "format": "binary",
         "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/refs/heads/main/non_ip/apple_intelligence.srs",
+        "download_detour": "direct-out"
+      },
+      {
+        "tag": "icloud-private-relay",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/refs/heads/main/domainset/icloud_private_relay.srs",
         "download_detour": "direct-out"
       },
       {
