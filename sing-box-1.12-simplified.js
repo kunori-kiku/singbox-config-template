@@ -52,7 +52,8 @@ if (noV6) {
   // Insert the new rule after the found index
   config.route.rules.splice(targetIndex + 1, 0, { 
     "ip_version": 6, 
-    "action": "reject" 
+    "action": "reject",
+    "method": "drop"
   });
 }
 
