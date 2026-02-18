@@ -24,7 +24,7 @@ table inet user {
 
     # 3) LAN/control plane destinations: never tun
     ip  daddr { 127.0.0.0/8, 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16 } return
-    ip6 daddr { ::1/128, fe80::/10, ff00::/8, fc00::/7 } return
+    ip6 daddr { ::1/128, fe80::/10, ff00::/8 } return
 
     # (More hardcore "exclude router's own addresses" option)
     # fib daddr type local return
