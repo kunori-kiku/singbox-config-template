@@ -284,6 +284,13 @@
       {
         "action": "route",
         "rule_set": [
+          "no_direct"
+        ],
+        "outbound": "proxy"
+      },
+      {
+        "action": "route",
+        "rule_set": [
           "ai_non_ip",
           "ai_supplementary"
         ],
@@ -468,6 +475,13 @@
         "type": "remote",
         "format": "binary",
         "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/ai_supplementary.srs",
+        "download_detour": "direct-out"
+      },
+      {
+        "tag": "no_direct",
+        "type": "remote",
+        "format": "binary",
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/no_direct.srs",
         "download_detour": "direct-out"
       },
       {
