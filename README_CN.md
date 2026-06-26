@@ -6,7 +6,9 @@
 本仓库采用 MIT 许可证。
 
 **注意**：
-- **推荐**：使用 `sing-box-1.12-simplified.js` 配合 1.12 版本模板，以获得最新功能和 URL 参数支持。
+- **推荐**：使用与你的 sing-box 内核版本匹配的脚本和模板：
+  - **sing-box 1.12 / 1.13**（稳定版）：使用 `sing-box-1.12-simplified.js` 或 `sing-box-1.13-simplified.js`，配合对应的 `sub-store/1.12` 或 `sub-store/1.13` 模板。1.13 与 1.12 语法相同，因此两个脚本功能等价，单独保留仅为清晰起见。
+  - **sing-box 1.14**（目前为 alpha）：使用 `sing-box-1.14-simplified.js`，配合 `sub-store/1.14` 模板。1.14 改变了 DNS 处理方式（国内分流改用 `evaluate` + `match_response`，并以 `store_dns` 取代 `store_rdrc`），因此需要专属的脚本和模板。
 - 所有旧版模板和脚本（1.11 及更早版本）已**弃用**，不建议使用。
 - sing-box-subscribe 版本的模板现已**弃用**。
 
@@ -37,12 +39,16 @@
 
 ### 步骤二：使用模板和脚本创建文件
 **在 `文件` 部分创建一个文件**（注意，是文件部分！！！！）：
-1. 将原始模板文件的 URL 粘贴到文件字段中：
-   - 对于 sing-box 1.12：`https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sub-store/1.12/tun-fakeip-noquic.json`
+1. 将原始模板文件的 URL 粘贴到文件字段中（选择与你的 sing-box 版本匹配的那个）：
+   - sing-box 1.12：`https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sub-store/1.12/tun-fakeip-noquic.json`
+   - sing-box 1.13：`https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sub-store/1.13/tun-fakeip-noquic.json`
+   - sing-box 1.14：`https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sub-store/1.14/tun-fakeip-noquic.json`
    
-2. 向下滚动到 `脚本操作` 部分，填入脚本 URL：
-   - 基本用法：`https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.12-simplified.js#type=2&name=my-nodes`
-   - 带 URL 参数（见下文）：`...sing-box-1.12-simplified.js#type=2&name=my-nodes&no_v6=true&no_doh=true`
+2. 向下滚动到 `脚本操作` 部分，填入脚本 URL（使用与上面模板版本对应的脚本）：
+   - sing-box 1.12：`https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.12-simplified.js#type=2&name=my-nodes`
+   - sing-box 1.13：`https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.13-simplified.js#type=2&name=my-nodes`
+   - sing-box 1.14：`https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.14-simplified.js#type=2&name=my-nodes`
+   - 带 URL 参数（见下文）：在脚本 URL 后追加例如 `&no_v6=true&no_doh=true`
 
 3. **注意**：
    - `type=2` 表示单个订阅。如果你有组合订阅，请使用 `type=1`
@@ -53,6 +59,8 @@
 ### URL 参数
 
 你可以通过在脚本 URL 中添加 URL 参数来自定义配置。多个参数可以组合使用。
+
+> 下面的示例使用 1.12 脚本；相同的参数同样适用于 `sing-box-1.13-simplified.js` 和 `sing-box-1.14-simplified.js`——只需替换脚本文件名即可。
 
 #### 可用参数：
 
@@ -126,7 +134,7 @@
 
 ## OpenWrt 部署（1.12+）
 
-位于 `sub-store/1.12/wrt/` 的文件专为 OpenWrt 路由器定制：
+位于 `sub-store/<版本>/wrt/`（`sub-store/1.12/wrt/`、`sub-store/1.13/wrt/`、`sub-store/1.14/wrt/`）的文件专为 OpenWrt 路由器定制。请使用与你的 sing-box 版本匹配的套件（1.13 与 1.12 相同；1.14 包含已迁移的 DNS 模板）：
 
 - **模板**：`tun-fakeip-noquic.json` – 针对路由器资源优化的精简配置。
 - **配置**：`config/` – 包含 UCI 配置（`/etc/config/sing-box`）和防火墙集成。
