@@ -6,7 +6,9 @@ Sing-box configurations tailored for kunori-kiku (and possibly someone else)
 This repository uses MIT license.
 
 **Notice**: 
-- **RECOMMENDED**: Use `sing-box-1.12-simplified.js` with version 1.12 templates for the latest features and URL parameters support.
+- **RECOMMENDED**: Use the script and templates matching your sing-box core version:
+  - **sing-box 1.12 / 1.13** (stable): use `sing-box-1.12-simplified.js` or `sing-box-1.13-simplified.js` with the matching `sub-store/1.12` or `sub-store/1.13` templates. 1.13 shares 1.12's syntax, so the two scripts are equivalent and kept separate only for clarity.
+  - **sing-box 1.14** (currently alpha): use `sing-box-1.14-simplified.js` with `sub-store/1.14` templates. 1.14 changed DNS handling (`evaluate` + `match_response` domestic routing, `store_dns` replacing `store_rdrc`), so it requires its own script and templates.
 - All former templates and scripts (1.11 and earlier versions) are **DEPRECATED** and not recommended for use.
 - The sing-box-subscribe version of template is now **DEPRECATED**.
 
@@ -37,12 +39,16 @@ This repository uses MIT license.
 
 ### Step 2: Create a file with template and script
 **Create a file in the `file` section** (NOTICE, FILE SECTION!!!!):
-1. Paste the URL of raw template file into the file field:
-   - For sing-box 1.12: `https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sub-store/1.12/tun-fakeip-noquic.json`
+1. Paste the URL of raw template file into the file field (pick the one matching your sing-box version):
+   - sing-box 1.12: `https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sub-store/1.12/tun-fakeip-noquic.json`
+   - sing-box 1.13: `https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sub-store/1.13/tun-fakeip-noquic.json`
+   - sing-box 1.14: `https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sub-store/1.14/tun-fakeip-noquic.json`
    
-2. Scroll down to `Script Operation` section and fill in the script URL:
-   - Basic usage: `https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.12-simplified.js#type=2&name=my-nodes`
-   - With URL parameters (see below): `...sing-box-1.12-simplified.js#type=2&name=my-nodes&no_v6=true&no_doh=true`
+2. Scroll down to `Script Operation` section and fill in the script URL (use the script matching the template version above):
+   - sing-box 1.12: `https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.12-simplified.js#type=2&name=my-nodes`
+   - sing-box 1.13: `https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.13-simplified.js#type=2&name=my-nodes`
+   - sing-box 1.14: `https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.14-simplified.js#type=2&name=my-nodes`
+   - With URL parameters (see below): append e.g. `&no_v6=true&no_doh=true` to the script URL
 
 3. **Note**:
    - `type=2` refers to single subscription. If you have a group subscription, use `type=1`
@@ -53,6 +59,8 @@ This repository uses MIT license.
 ### URL Parameters
 
 You can customize the configuration by adding URL parameters to the script URL. Multiple parameters can be combined.
+
+> The examples below use the 1.12 script; the same parameters work with `sing-box-1.13-simplified.js` and `sing-box-1.14-simplified.js` — just swap the script filename.
 
 #### Available Parameters:
 
@@ -126,7 +134,7 @@ You can customize the configuration by adding URL parameters to the script URL. 
 
 ## OpenWrt Deployment (1.12+)
 
-Files located in `sub-store/1.12/wrt/` are tailored for OpenWrt routers:
+Files located in `sub-store/<version>/wrt/` (`sub-store/1.12/wrt/`, `sub-store/1.13/wrt/`, `sub-store/1.14/wrt/`) are tailored for OpenWrt routers. Use the bundle matching your sing-box version (1.13 mirrors 1.12; 1.14 carries the migrated DNS template):
 
 - **Template**: `tun-fakeip-noquic.json` – Minimized configuration for router resources.
 - **Config**: `config/` – Includes UCI configuration (`/etc/config/sing-box`) and firewall integration.
