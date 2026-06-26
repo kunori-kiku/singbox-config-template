@@ -278,6 +278,34 @@
             {
                 "action": "route",
                 "rule_set": [
+                    "ai_non_ip",
+                    "ai_supplementary"
+                ],
+                "outbound": "proxy"
+            },
+            {
+                "type": "logical",
+                "mode": "and",
+                "rules": [
+                    {
+                        "rule_set": [
+                            "download_domainset",
+                            "download_non_ip",
+                            "game-download"
+                        ]
+                    },
+                    {
+                        "rule_set": [
+                            "gfw"
+                        ]
+                    }
+                ],
+                "action": "route",
+                "outbound": "proxy"
+            },
+            {
+                "action": "route",
+                "rule_set": [
                     "download_domainset",
                     "download_non_ip",
                     "game-download"
@@ -422,6 +450,20 @@
                 "type": "remote",
                 "format": "binary",
                 "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/ai.srs",
+                "download_detour": "direct-out"
+            },
+            {
+                "tag": "ai_supplementary",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/ai_supplementary.srs",
+                "download_detour": "direct-out"
+            },
+            {
+                "tag": "gfw",
+                "type": "remote",
+                "format": "binary",
+                "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/gfw.srs",
                 "download_detour": "direct-out"
             },
             {
