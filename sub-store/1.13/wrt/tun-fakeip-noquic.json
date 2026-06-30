@@ -42,6 +42,21 @@
         ],
         "rules": [
             {
+                "type": "logical",
+                "mode": "and",
+                "rules": [
+                    {
+                        "query_type": "AAAA"
+                    },
+                    {
+                        "default_interface_address": "2000::/3",
+                        "invert": true
+                    }
+                ],
+                "action": "predefined",
+                "rcode": "NOERROR"
+            },
+            {
                 "action": "route",
                 "clash_mode": "direct",
                 "server": "dns_direct"
@@ -346,6 +361,21 @@
                 "action": "route",
                 "domain_regex": ".",
                 "outbound": "proxy"
+            },
+            {
+                "type": "logical",
+                "mode": "and",
+                "rules": [
+                    {
+                        "ip_version": 6
+                    },
+                    {
+                        "default_interface_address": "2000::/3",
+                        "invert": true
+                    }
+                ],
+                "action": "reject",
+                "method": "drop"
             },
             {
                 "rule_set": [

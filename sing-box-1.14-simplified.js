@@ -6,9 +6,15 @@
 //      ip_cidr matching was removed for non-legacy DNS configs in 1.14). Both rules
 //      carry `server: dns_direct`, so the no_doh rewrite below handles them uniformly.
 //   2. `cache_file.store_rdrc` is gone (replaced by the default-off `store_dns`).
-// The `strategy` field on default_domain_resolver / DNS rule actions is deprecated in
-// 1.14 (removal planned 1.16), so the no_v6 path uses the top-level `dns.strategy`
-// instead, which remains the supported way to force a global resolution strategy.
+//   3. Remote rule-sets download via a top-level `http_clients` entry referenced by
+//      `route.default_http_client`. The legacy per-rule-set `download_detour` is
+//      deprecated in 1.14 (removed in 1.16); the client entry carries no detour, so
+//      downloads dial direct (an http_client is not subject to the route rules).
+//
+// IPv6 is now handled automatically inside the template: an AAAA->NOERROR DNS rule and
+// an ip_version:6 drop route rule, both gated on the default interface lacking a global
+// `2000::/3` address. So there is no longer a no_v6 parameter. The optional `proxy_ip`
+// parameter routes a comma-separated list of destination IP CIDRs through `proxy`.
 
 // Extract arguments passed to the script
 const { type, name } = $arguments
@@ -18,9 +24,11 @@ const { type, name } = $arguments
 const params = $options?._req?.query || {};
 
 // Extract specific parameters and convert them to boolean flags
-const noV6 = params.no_v6 === 'true';
 const noReject = params.no_reject === 'true';
 const noDoh = params.no_doh === 'true';
+// proxy_ip: comma-separated destination IP CIDRs to route through proxy
+// (e.g. ?proxy_ip=1.2.3.0/24,5.6.7.8/32)
+const proxyIp = params.proxy_ip;
 
 // Parse the template file content (usually passed as the first file in the arguments)
 let config = JSON.parse($files[0])
@@ -45,30 +53,26 @@ config.outbounds.map(i => {
 })
 
 // == Additional logic section with URL parameter handling ==
-// === Logic for no_v6 ===
-if (noV6) {
-  // 1. Add AAAA reject rule to the front of dns.rules
-  config.dns.rules.unshift({ "query_type": ["AAAA"], "action": "reject" });
-
-  // 2. Force IPv4-only resolution globally.
-  //    1.14: default_domain_resolver.strategy / DNS-rule-action strategy are
-  //    deprecated; the top-level dns.strategy is the supported equivalent.
-  config.dns.strategy = "ipv4_only";
-
-  // 3. Add IPv6 reject rule after the specific proxy regex rule
-  // We look for the exact object structure provided
-  const targetIndex = config.route.rules.findIndex(r =>
-    r.action === 'route' &&
-    r.domain_regex === '.' &&
-    r.outbound === 'proxy'
-  );
-
-  // Insert the new rule after the found index
-  config.route.rules.splice(targetIndex + 1, 0, {
-    "ip_version": 6,
-    "action": "reject",
-    "method": "drop"
-  });
+// === Logic for proxy_ip (force specific destination IP CIDRs through proxy) ===
+if (proxyIp) {
+  // Accept a comma-separated list; always emit ip_cidr as an array.
+  const cidrs = String(proxyIp).split(',').map(s => s.trim()).filter(Boolean);
+  if (cidrs.length) {
+    // Insert right after the catch-all `domain_regex "." -> proxy` rule, so it only
+    // catches destination IPs that arrive without a recovered domain.
+    const targetIndex = config.route.rules.findIndex(r =>
+      r.action === 'route' &&
+      r.domain_regex === '.' &&
+      r.outbound === 'proxy'
+    );
+    if (targetIndex !== -1) {
+      config.route.rules.splice(targetIndex + 1, 0, {
+        "ip_cidr": cidrs,
+        "action": "route",
+        "outbound": "proxy"
+      });
+    }
+  }
 }
 
 // === Logic for no_reject ===
@@ -93,8 +97,10 @@ if (noReject) {
     const hasNoNetwork = rule.network === undefined;
     const hasNoIpVersion = rule.ip_version === undefined;
 
-    // Remove if it is a reject rule AND it lacks both network and ip_version constraints
-    const shouldRemove = isReject && hasNoNetwork && hasNoIpVersion;
+    // Remove if it is a reject rule AND it lacks both network and ip_version constraints.
+    // Spare logical reject rules (the automatic-v6 ip_version:6 drop): that is v6
+    // handling, not ad/abuse blocking, and must survive no_reject.
+    const shouldRemove = isReject && hasNoNetwork && hasNoIpVersion && rule.type !== 'logical';
 
     return !shouldRemove;
   });

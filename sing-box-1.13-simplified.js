@@ -1,10 +1,14 @@
 // Sub-Store producer script for sing-box 1.13.
 //
-// 1.13 shares 1.12's configuration syntax (the migration guide has no 1.13 section),
-// so this script is functionally identical to sing-box-1.12-simplified.js. It is kept
-// as a separate, explicitly-named file purely for clarity. The DNS routing uses the
-// legacy form (no evaluate/match_response), and no_v6 sets the resolution strategy via
-// default_domain_resolver.strategy — both valid in 1.13 and only changed in 1.14.
+// 1.13 shares 1.12's configuration syntax (the migration guide has no 1.13 section).
+// It is kept as a separate, explicitly-named file purely for clarity. The DNS routing
+// uses the legacy form (no evaluate/match_response).
+//
+// IPv6 is now handled automatically inside the template: an AAAA->NOERROR DNS rule and
+// an ip_version:6 drop route rule, both gated on the default interface lacking a global
+// `2000::/3` address (default_interface_address requires sing-box 1.13+). So there is no
+// longer a no_v6 parameter. The optional `proxy_ip` parameter routes a comma-separated
+// list of destination IP CIDRs through `proxy`.
 
 // Extract arguments passed to the script
 const { type, name } = $arguments
@@ -14,9 +18,11 @@ const { type, name } = $arguments
 const params = $options?._req?.query || {};
 
 // Extract specific parameters and convert them to boolean flags
-const noV6 = params.no_v6 === 'true';
 const noReject = params.no_reject === 'true';
 const noDoh = params.no_doh === 'true';
+// proxy_ip: comma-separated destination IP CIDRs to route through proxy
+// (e.g. ?proxy_ip=1.2.3.0/24,5.6.7.8/32)
+const proxyIp = params.proxy_ip;
 
 // Parse the template file content (usually passed as the first file in the arguments)
 let config = JSON.parse($files[0])
@@ -41,28 +47,26 @@ config.outbounds.map(i => {
 })
 
 // == Additional logic section with URL parameter handling ==
-// === Logic for no_v6 ===
-if (noV6) {
-  // 1. Add AAAA reject rule to the front of dns.rules
-  config.dns.rules.unshift({ "query_type": "AAAA", "action": "reject" });
-
-  // 2. Set default domain resolver strategy to ipv4_only
-  config.route.default_domain_resolver.strategy = "ipv4_only";
-
-  // 3. Add IPv6 reject rule after the specific proxy regex rule
-  // We look for the exact object structure provided
-  const targetIndex = config.route.rules.findIndex(r =>
-    r.action === 'route' &&
-    r.domain_regex === '.' &&
-    r.outbound === 'proxy'
-  );
-
-  // Insert the new rule after the found index
-  config.route.rules.splice(targetIndex + 1, 0, {
-    "ip_version": 6,
-    "action": "reject",
-    "method": "drop"
-  });
+// === Logic for proxy_ip (force specific destination IP CIDRs through proxy) ===
+if (proxyIp) {
+  // Accept a comma-separated list; always emit ip_cidr as an array.
+  const cidrs = String(proxyIp).split(',').map(s => s.trim()).filter(Boolean);
+  if (cidrs.length) {
+    // Insert right after the catch-all `domain_regex "." -> proxy` rule, so it only
+    // catches destination IPs that arrive without a recovered domain.
+    const targetIndex = config.route.rules.findIndex(r =>
+      r.action === 'route' &&
+      r.domain_regex === '.' &&
+      r.outbound === 'proxy'
+    );
+    if (targetIndex !== -1) {
+      config.route.rules.splice(targetIndex + 1, 0, {
+        "ip_cidr": cidrs,
+        "action": "route",
+        "outbound": "proxy"
+      });
+    }
+  }
 }
 
 // === Logic for no_reject ===
@@ -87,8 +91,10 @@ if (noReject) {
     const hasNoNetwork = rule.network === undefined;
     const hasNoIpVersion = rule.ip_version === undefined;
 
-    // Remove if it is a reject rule AND it lacks both network and ip_version constraints
-    const shouldRemove = isReject && hasNoNetwork && hasNoIpVersion;
+    // Remove if it is a reject rule AND it lacks both network and ip_version constraints.
+    // Spare logical reject rules (the automatic-v6 ip_version:6 drop): that is v6
+    // handling, not ad/abuse blocking, and must survive no_reject.
+    const shouldRemove = isReject && hasNoNetwork && hasNoIpVersion && rule.type !== 'logical';
 
     return !shouldRemove;
   });

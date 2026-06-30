@@ -43,6 +43,21 @@
     ],
     "rules": [
       {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "query_type": "AAAA"
+          },
+          {
+            "default_interface_address": "2000::/3",
+            "invert": true
+          }
+        ],
+        "action": "predefined",
+        "rcode": "NOERROR"
+      },
+      {
         "action": "route",
         "clash_mode": "direct",
         "server": "dns_direct"
@@ -118,30 +133,124 @@
         ]
       },
       {
-        "action": "evaluate",
-        "server": "dns_direct"
-      },
-      {
-        "match_response": true,
-        "action": "route",
-        "rule_set": [
-          "domestic_ip",
-          "geoip-cn"
-        ],
-        "server": "dns_direct"
-      },
-      {
-        "action": "route",
-        "server": "fakeip",
-        "rewrite_ttl": 1,
         "query_type": [
           "A",
           "AAAA"
-        ]
+        ],
+        "action": "evaluate",
+        "server": "dns_direct",
+        "timeout": "1s"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "query_type": [
+              "A",
+              "AAAA"
+            ]
+          },
+          {
+            "type": "logical",
+            "mode": "or",
+            "rules": [
+              {
+                "match_response": true,
+                "response_rcode": "NOERROR"
+              },
+              {
+                "match_response": true,
+                "response_rcode": "FORMERR"
+              },
+              {
+                "match_response": true,
+                "response_rcode": "SERVFAIL"
+              },
+              {
+                "match_response": true,
+                "response_rcode": "NXDOMAIN"
+              },
+              {
+                "match_response": true,
+                "response_rcode": "NOTIMP"
+              },
+              {
+                "match_response": true,
+                "response_rcode": "REFUSED"
+              }
+            ]
+          },
+          {
+            "match_response": true,
+            "ip_accept_any": true,
+            "invert": true
+          }
+        ],
+        "action": "respond"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "query_type": [
+              "A",
+              "AAAA"
+            ]
+          },
+          {
+            "match_response": true,
+            "response_rcode": "NOERROR"
+          },
+          {
+            "match_response": true,
+            "rule_set": [
+              "domestic_ip",
+              "geoip-cn"
+            ]
+          }
+        ],
+        "action": "respond"
+      },
+      {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "query_type": [
+              "A",
+              "AAAA"
+            ]
+          },
+          {
+            "match_response": true,
+            "response_rcode": "NOERROR"
+          },
+          {
+            "match_response": true,
+            "ip_accept_any": true
+          }
+        ],
+        "server": "fakeip",
+        "rewrite_ttl": 1
+      },
+      {
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "action": "predefined",
+        "rcode": "SERVFAIL"
       }
     ],
     "final": "dns_direct"
   },
+  "http_clients": [
+    {
+      "tag": "rule-set-downloader"
+    }
+  ],
   "inbounds": [
     {
       "tag": "tun-in",
@@ -215,6 +324,7 @@
     "default_domain_resolver": {
       "server": "dns_direct"
     },
+    "default_http_client": "rule-set-downloader",
     "rules": [
       {
         "port": 53,
@@ -358,6 +468,21 @@
         "outbound": "proxy"
       },
       {
+        "type": "logical",
+        "mode": "and",
+        "rules": [
+          {
+            "ip_version": 6
+          },
+          {
+            "default_interface_address": "2000::/3",
+            "invert": true
+          }
+        ],
+        "action": "reject",
+        "method": "drop"
+      },
+      {
         "rule_set": [
           "reject_ip"
         ],
@@ -397,260 +522,223 @@
         "tag": "reject_non_ip_no_drop",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/reject-no-drop.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/reject-no-drop.srs"
       },
       {
         "tag": "reject_non_ip_drop",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/reject-drop.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/reject-drop.srs"
       },
       {
         "tag": "reject_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/reject.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/reject.srs"
       },
       {
         "tag": "reject_domainset",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/reject.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/reject.srs"
       },
       {
         "tag": "reject_supplement",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/reject.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/reject.srs"
       },
       {
         "tag": "reject_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/reject.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/reject.srs"
       },
       {
         "tag": "cdn_domainset",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/cdn.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/cdn.srs"
       },
       {
         "tag": "cdn_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/cdn.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/cdn.srs"
       },
       {
         "tag": "cdn_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/cdn.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/cdn.srs"
       },
       {
         "tag": "stream_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/stream.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/stream.srs"
       },
       {
         "tag": "ai_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/ai.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/ai.srs"
       },
       {
         "tag": "ai_supplementary",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/ai_supplementary.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/ai_supplementary.srs"
       },
       {
         "tag": "no_direct",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/no_direct.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/supplementary_rules/no_direct.srs"
       },
       {
         "tag": "gfw",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/gfw.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/gfw.srs"
       },
       {
         "tag": "telegram_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/telegram.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/telegram.srs"
       },
       {
         "tag": "apple_cdn",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/apple_cdn.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/apple_cdn.srs"
       },
       {
         "tag": "apple_services",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/apple_services.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/apple_services.srs"
       },
       {
         "tag": "apple_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/apple_services.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/apple_services.srs"
       },
       {
         "tag": "apple_cn_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/apple_cn.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/apple_cn.srs"
       },
       {
         "tag": "apple-intelligence",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/refs/heads/main/non_ip/apple_intelligence.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/refs/heads/main/non_ip/apple_intelligence.srs"
       },
       {
         "tag": "icloud-private-relay",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/refs/heads/main/domainset/icloud_private_relay.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/refs/heads/main/domainset/icloud_private_relay.srs"
       },
       {
         "tag": "microsoft_cdn_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/microsoft_cdn.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/microsoft_cdn.srs"
       },
       {
         "tag": "microsoft_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/microsoft.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/microsoft.srs"
       },
       {
         "tag": "download_domainset",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/download.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/download.srs"
       },
       {
         "tag": "download_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/download.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/download.srs"
       },
       {
         "tag": "download_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/download.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/download.srs"
       },
       {
         "tag": "game-download",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/game-download.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/domainset/game-download.srs"
       },
       {
         "tag": "lan_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/lan.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/lan.srs"
       },
       {
         "tag": "lan_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/lan.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/lan.srs"
       },
       {
         "tag": "global_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/global.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/non_ip/global.srs"
       },
       {
         "tag": "domestic_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/domestic.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/main/ip/domestic.srs"
       },
       {
         "tag": "geoip-bilibili",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo-lite/geoip/bilibili.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo-lite/geoip/bilibili.srs"
       },
       {
         "tag": "geosite-bilibili",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/bilibili.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/bilibili.srs"
       },
       {
         "tag": "geosite-tiktok",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/tiktok.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/tiktok.srs"
       },
       {
         "tag": "geolocation-!cn",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/geolocation-!cn.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/geolocation-!cn.srs"
       },
       {
         "tag": "geoip-cn",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geoip/cn.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geoip/cn.srs"
       },
       {
         "tag": "crunchyroll_non_ip",
         "type": "remote",
         "format": "binary",
-        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/refs/heads/main/supplementary_rules/crunchyroll.srs",
-        "download_detour": "direct-out"
+        "url": "https://gh-proxy.com/https://github.com/kunori-kiku/sing-box-ruleset/raw/refs/heads/main/supplementary_rules/crunchyroll.srs"
       }
     ],
     "auto_detect_interface": true,
