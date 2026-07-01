@@ -48,7 +48,7 @@ This repository uses MIT license.
    - sing-box 1.12: `https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.12-simplified.js#type=2&name=my-nodes`
    - sing-box 1.13: `https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.13-simplified.js#type=2&name=my-nodes`
    - sing-box 1.14: `https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.14-simplified.js#type=2&name=my-nodes`
-   - With URL parameters (see below): append e.g. `&no_v6=true&no_doh=true` to the script URL
+   - With URL parameters (see below): append e.g. `&no_reject=true&no_doh=true` to the script URL
 
 3. **Note**:
    - `type=2` refers to single subscription. If you have a group subscription, use `type=1`
@@ -60,35 +60,41 @@ This repository uses MIT license.
 
 You can customize the configuration by adding URL parameters to the script URL. Multiple parameters can be combined.
 
-> The examples below use the 1.12 script; the same parameters work with `sing-box-1.13-simplified.js` and `sing-box-1.14-simplified.js` — just swap the script filename.
+> The examples below use the 1.12 script. `no_reject` and `no_doh` work on every version. **`no_v6` is 1.12-only** (1.13/1.14 handle IPv6 automatically — see the note under the table), and **`proxy_ip` is 1.13/1.14-only**.
 
 #### Available Parameters:
 
-| Parameter | Values | Description | Effects |
-|-----------|--------|-------------|---------|
-| `type` | `1` or `2` | **Required**. Subscription type | `1` = collection, `2` = single subscription |
-| `name` | string | **Required**. Your subscription name | Must match the node name you created |
-| `no_v6` | `true` | Disable IPv6 | 1. Reject AAAA DNS queries<br>2. Set DNS strategy to `ipv4_only`<br>3. Reject IPv6 traffic in routing rules |
-| `no_reject` | `true` | Disable ad blocking | 1. Remove ad-block DNS rules (fakeip reject rules)<br>2. Remove reject routing rules without network/ip_version constraints |
-| `no_doh` | `true` | Disable DNS over HTTPS | 1. Change `route.default_domain_resolver.server` from `dns_direct` to `dns_local`<br>2. Change all DNS rules with `dns_direct` to `dns_local`<br>3. Change `dns.final` from `dns_direct` to `dns_local` |
+| Parameter | Values | Versions | Description | Effects |
+|-----------|--------|----------|-------------|---------|
+| `type` | `1` or `2` | all | **Required**. Subscription type | `1` = collection, `2` = single subscription |
+| `name` | string | all | **Required**. Your subscription name | Must match the node name you created |
+| `no_reject` | `true` | all | Disable ad blocking | 1. Remove ad-block DNS rules (fakeip reject rules)<br>2. Remove reject routing rules that have no network/ip_version constraint (the automatic-v6 drop is preserved) |
+| `no_doh` | `true` | all | Disable DNS over HTTPS | 1. Change `route.default_domain_resolver.server` from `dns_direct` to `dns_local`<br>2. Change all DNS rules with `dns_direct` to `dns_local`<br>3. Change `dns.final` from `dns_direct` to `dns_local` |
+| `no_v6` | `true` | **1.12 only** | Disable IPv6 | 1. Reject AAAA DNS queries<br>2. Set DNS strategy to `ipv4_only`<br>3. Reject IPv6 traffic in routing rules |
+| `proxy_ip` | comma-separated CIDRs | **1.13 / 1.14** | Force destination IP ranges through the proxy | Inserts `{ "ip_cidr": [...], "action": "route", "outbound": "proxy" }` right after the `domain_regex "."→proxy` catch-all (above the LAN/CN→direct rules), e.g. to reach a remote LAN through the tunnel |
+
+> **IPv6 on 1.13 / 1.14 is automatic.** The template returns an empty (`NOERROR`) AAAA answer and drops IPv6 connections whenever the default interface has no global (`2000::/3`) IPv6 address, so happy-eyeballs never attempts v6. There is therefore no `no_v6` flag on these versions; it remains only on 1.12.
 
 #### Usage Examples:
 
 ```
 # Basic usage (required parameters only)
-...sing-box-1.12-simplified.js#type=2&name=my-nodes
+...sing-box-1.13-simplified.js#type=2&name=my-nodes
 
-# Disable IPv6
+# Disable ad blocking (any version)
+...sing-box-1.13-simplified.js#type=2&name=my-nodes&no_reject=true
+
+# Disable DNS over HTTPS / use local DNS resolver (any version)
+...sing-box-1.14-simplified.js#type=2&name=my-nodes&no_doh=true
+
+# Force IP ranges through the proxy — 1.13 / 1.14 only (e.g. a remote LAN)
+...sing-box-1.14-simplified.js#type=2&name=my-nodes&proxy_ip=10.111.0.0/24,10.112.0.0/24
+
+# Disable IPv6 — 1.12 only (1.13 / 1.14 handle v6 automatically)
 ...sing-box-1.12-simplified.js#type=2&name=my-nodes&no_v6=true
 
-# Disable ad blocking
-...sing-box-1.12-simplified.js#type=2&name=my-nodes&no_reject=true
-
-# Disable DNS over HTTPS (use local DNS resolver)
-...sing-box-1.12-simplified.js#type=2&name=my-nodes&no_doh=true
-
-# Combine multiple parameters
-...sing-box-1.12-simplified.js#type=2&name=my-nodes&no_v6=true&no_reject=true&no_doh=true
+# Combine multiple parameters (1.13 / 1.14)
+...sing-box-1.13-simplified.js#type=2&name=my-nodes&no_reject=true&no_doh=true&proxy_ip=10.111.0.0/24
 ```
 
 ### Preprocessing nodes

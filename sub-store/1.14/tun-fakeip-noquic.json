@@ -63,11 +63,12 @@
         "server": "dns_direct"
       },
       {
-        "action": "reject",
+        "action": "predefined",
         "query_type": [
           "HTTPS",
           "SVCB"
-        ]
+        ],
+        "rcode": "NOERROR"
       },
       {
         "action": "route",

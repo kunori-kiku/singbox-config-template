@@ -48,7 +48,7 @@
    - sing-box 1.12：`https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.12-simplified.js#type=2&name=my-nodes`
    - sing-box 1.13：`https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.13-simplified.js#type=2&name=my-nodes`
    - sing-box 1.14：`https://raw.githubusercontent.com/kunori-kiku/singbox-config-template/refs/heads/master/sing-box-1.14-simplified.js#type=2&name=my-nodes`
-   - 带 URL 参数（见下文）：在脚本 URL 后追加例如 `&no_v6=true&no_doh=true`
+   - 带 URL 参数（见下文）：在脚本 URL 后追加例如 `&no_reject=true&no_doh=true`
 
 3. **注意**：
    - `type=2` 表示单个订阅。如果你有组合订阅，请使用 `type=1`
@@ -60,35 +60,41 @@
 
 你可以通过在脚本 URL 中添加 URL 参数来自定义配置。多个参数可以组合使用。
 
-> 下面的示例使用 1.12 脚本；相同的参数同样适用于 `sing-box-1.13-simplified.js` 和 `sing-box-1.14-simplified.js`——只需替换脚本文件名即可。
+> 下面的示例使用 1.12 脚本。`no_reject` 和 `no_doh` 适用于所有版本。**`no_v6` 仅适用于 1.12**（1.13/1.14 自动处理 IPv6——见表格下方说明），而 **`proxy_ip` 仅适用于 1.13/1.14**。
 
 #### 可用参数：
 
-| 参数 | 值 | 说明 | 效果 |
-|------|-----|------|------|
-| `type` | `1` 或 `2` | **必需**。订阅类型 | `1` = 组合订阅，`2` = 单个订阅 |
-| `name` | 字符串 | **必需**。你的订阅名称 | 必须与你创建的节点名称一致 |
-| `no_v6` | `true` | 禁用 IPv6 | 1. 拒绝 AAAA DNS 查询<br>2. 将 DNS 策略设为 `ipv4_only`<br>3. 在路由规则中拒绝 IPv6 流量 |
-| `no_reject` | `true` | 禁用广告拦截 | 1. 移除广告拦截 DNS 规则（fakeip 拒绝规则）<br>2. 移除不含 network/ip_version 约束的拒绝路由规则 |
-| `no_doh` | `true` | 禁用 DNS over HTTPS | 1. 将 `route.default_domain_resolver.server` 从 `dns_direct` 改为 `dns_local`<br>2. 将所有使用 `dns_direct` 的 DNS 规则改为 `dns_local`<br>3. 将 `dns.final` 从 `dns_direct` 改为 `dns_local` |
+| 参数 | 值 | 版本 | 说明 | 效果 |
+|------|-----|------|------|------|
+| `type` | `1` 或 `2` | 全部 | **必需**。订阅类型 | `1` = 组合订阅，`2` = 单个订阅 |
+| `name` | 字符串 | 全部 | **必需**。你的订阅名称 | 必须与你创建的节点名称一致 |
+| `no_reject` | `true` | 全部 | 禁用广告拦截 | 1. 移除广告拦截 DNS 规则（fakeip 拒绝规则）<br>2. 移除不含 network/ip_version 约束的拒绝路由规则（自动 IPv6 丢弃规则会被保留） |
+| `no_doh` | `true` | 全部 | 禁用 DNS over HTTPS | 1. 将 `route.default_domain_resolver.server` 从 `dns_direct` 改为 `dns_local`<br>2. 将所有使用 `dns_direct` 的 DNS 规则改为 `dns_local`<br>3. 将 `dns.final` 从 `dns_direct` 改为 `dns_local` |
+| `no_v6` | `true` | **仅 1.12** | 禁用 IPv6 | 1. 拒绝 AAAA DNS 查询<br>2. 将 DNS 策略设为 `ipv4_only`<br>3. 在路由规则中拒绝 IPv6 流量 |
+| `proxy_ip` | 逗号分隔的 CIDR | **1.13 / 1.14** | 强制将目标 IP 段走代理 | 在 `domain_regex "."→proxy` 兜底规则之后（LAN/CN→直连规则之前）插入 `{ "ip_cidr": [...], "action": "route", "outbound": "proxy" }`，例如用于通过隧道访问远端局域网 |
+
+> **1.13 / 1.14 的 IPv6 为自动处理。** 当默认接口没有全局（`2000::/3`）IPv6 地址时，模板会对 AAAA 查询返回空的 `NOERROR` 应答并丢弃 IPv6 连接，因此 happy-eyeballs 永远不会尝试 v6。故这些版本没有 `no_v6` 参数；它仅保留在 1.12 上。
 
 #### 使用示例：
 
 ```
 # 基本用法（仅必需参数）
-...sing-box-1.12-simplified.js#type=2&name=my-nodes
+...sing-box-1.13-simplified.js#type=2&name=my-nodes
 
-# 禁用 IPv6
+# 禁用广告拦截（所有版本）
+...sing-box-1.13-simplified.js#type=2&name=my-nodes&no_reject=true
+
+# 禁用 DNS over HTTPS（使用本地 DNS 解析器，所有版本）
+...sing-box-1.14-simplified.js#type=2&name=my-nodes&no_doh=true
+
+# 强制 IP 段走代理——仅 1.13 / 1.14（例如访问远端局域网）
+...sing-box-1.14-simplified.js#type=2&name=my-nodes&proxy_ip=10.111.0.0/24,10.112.0.0/24
+
+# 禁用 IPv6——仅 1.12（1.13 / 1.14 自动处理 v6）
 ...sing-box-1.12-simplified.js#type=2&name=my-nodes&no_v6=true
 
-# 禁用广告拦截
-...sing-box-1.12-simplified.js#type=2&name=my-nodes&no_reject=true
-
-# 禁用 DNS over HTTPS（使用本地 DNS 解析器）
-...sing-box-1.12-simplified.js#type=2&name=my-nodes&no_doh=true
-
-# 组合多个参数
-...sing-box-1.12-simplified.js#type=2&name=my-nodes&no_v6=true&no_reject=true&no_doh=true
+# 组合多个参数（1.13 / 1.14）
+...sing-box-1.13-simplified.js#type=2&name=my-nodes&no_reject=true&no_doh=true&proxy_ip=10.111.0.0/24
 ```
 
 ### 节点预处理
